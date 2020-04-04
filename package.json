@@ -7,7 +7,8 @@
     "watch-build": "tsc -w",
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
-    "dev": "yarn run watch-serve"
+    "dev": "yarn run watch-serve",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
     "@types/express": "^4.17.4",
@@ -22,6 +23,9 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^4.1.1",
+    "typeorm": "^0.2.24"
   }
 }
