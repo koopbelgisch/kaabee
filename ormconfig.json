@@ -1,9 +1,16 @@
 {
-  "database": "./db/development.sqlite3",
-  "migrationsTableName": "migration_version",
-  "entities": "./src/models/*.ts",
-  "migrations": ["./db/migrations/*.ts"],
-  "cli": {
-    "migrationsDir": "migrations"
-  }
+   "type": "sqlite",
+   "database": "db/development.sqlite3",
+   "synchronize": true,
+   "logging": true,
+   "entities": [
+      "src/models/**/*.ts"
+   ],
+   "migrations": [
+      "db/migrations/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/models",
+      "migrationsDir": "src/migration"
+   }
 }
