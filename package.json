@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "watch-tsc": "tsc -w",
-    "dev": "nodemon dist/server.js"
+    "watch-build": "tsc -w",
+    "serve": "node ./dist/server.js",
+    "watch-serve": "nodemon",
+    "dev": "yarn run watch-serve"
   },
   "devDependencies": {
     "@types/express": "^4.17.4",
