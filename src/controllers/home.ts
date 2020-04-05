@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
+import { Store } from "../models/store";
 
 /**
  * GET /
  * Home page.
  */
-export function index(req: Request, res: Response): void {
+export async function index(req: Request, res: Response): Promise<void> {
   res.render("home", {
-    title: "KaaBee"
+    title: "KaaBee",
+    storeCount: await Store.count(),
   });
 }

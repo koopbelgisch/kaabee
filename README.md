@@ -9,3 +9,5 @@
 ## Development
 
 To start developing, run `yarn dev`. This will start a development server on [localhost:3000](http://localhost:3000) which automatically recompiles and restarts the server when you change any code files in `src/`.
+
+The database will be a empty when you start, you can fill it with some randomly generated data with `yarn run db:seed`.
