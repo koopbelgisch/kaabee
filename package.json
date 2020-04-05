@@ -10,7 +10,8 @@
     "watch-serve": "nodemon",
     "dev": "yarn run watch-serve",
     "test": "nyc ava",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "lint": "eslint --ext .ts ."
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
