@@ -4,24 +4,31 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "db:seed": "ts-node src/seed.ts",
     "watch-build": "tsc -w",
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
-    "dev": "yarn run watch-serve"
+    "dev": "yarn run watch-serve",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
     "@types/express": "^4.17.4",
+    "@types/faker": "^4.1.11",
     "@types/node": "^13.11.0",
     "@types/pug": "^2.0.4",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "eslint": "^6.8.0",
+    "faker": "^4.1.0",
     "nodemon": "^2.0.2",
     "ts-node": "^8.8.1",
     "typescript": "^3.8.3"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^4.1.1",
+    "typeorm": "^0.2.24"
   }
 }
