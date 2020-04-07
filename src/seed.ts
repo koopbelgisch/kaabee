@@ -27,5 +27,4 @@ async function seed(): Promise<void> {
   console.dir(stores);
 }
 
-
 seed();
