@@ -6,9 +6,11 @@ import { Store } from "../models/store";
  * Shows all stores
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
-    res.render("stores");
+  res.render("stores");
 }
 
 export async function getStore(req: Request, res: Response): Promise<void> {
-    res.render("store", {name: req.params["storeId"]});
+  res.render("store", {
+    name: req.params["storeId"]
+  });
 }
