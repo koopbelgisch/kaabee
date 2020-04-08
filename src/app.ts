@@ -4,6 +4,7 @@ import { createConnection } from "typeorm";
 import path from "path";
 
 import * as home from "./controllers/home";
+import * as winkels from "./controllers/winkels";
 
 type Environment = "production" | "develop" | "test";
 
@@ -32,7 +33,14 @@ export default async function spawn(config: Config = {}): Promise<Express> {
   /**
    * App Routes
    */
+  // Home page
   app.get("/", home.index);
+
+  // Winkels
+  app.get("/winkels", winkels.getStores);
+  app.get("/winkels/:storeId", winkels.getStore);
+
+  // Tags
 
   return app;
 }
