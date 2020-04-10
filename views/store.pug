@@ -1,1 +1,6 @@
-h1 Dit is de pagina voor de winkel #{ name }.
+h1 Dit is de pagina voor de winkel #{ store.name }.
+a(href="/") Home
+ul
+    li Beschrijving: #{ store.description }
+    li BTW-nummer: #{ store.vatnumber }
+    li Postcode: #{ store.postcode }
