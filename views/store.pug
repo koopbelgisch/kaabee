@@ -1,6 +1,13 @@
 h1 Dit is de pagina voor de winkel #{ store.name }.
-a(href="/") Home
+ul
+    li
+        a(href="/") Home
 ul
     li Beschrijving: #{ store.description }
     li BTW-nummer: #{ store.vatnumber }
     li Postcode: #{ store.postcode }
+    li Tags:
+        ul
+            each val, index in tags
+                li
+                    a(href="/tags/" + val.id) #{val.name}

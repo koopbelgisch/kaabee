@@ -17,7 +17,10 @@ export async function getStores(req: Request, res: Response): Promise<void> {
  */
 export async function getStore(req: Request, res: Response): Promise<void> {
   const store = await getRepository(Store).findOne(req.params["storeId"])
-  res.render("store", {store: store});
+  if (store !== undefined) {
+    const tags = await store.tags;
+    res.render("store", {store: store, tags: tags});
+  }
 }
 
 /**
