@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "db:seed": "ts-node src/seed.ts",
+    "db:seed-existing": "ts-node src/seedexistingstores.ts",
     "watch-build": "tsc -w",
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
