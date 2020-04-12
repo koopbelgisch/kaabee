@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Store } from "./models/store";
 import { Tag } from "./models/tag";
 import * as fs from "fs";
-import csv = require("csv-parser");
+import csv from "csv-parser";
 
 async function addTags(tagNames: string[]): Promise<Tag[]> {
   return await Promise.all(tagNames.map(async name => {
@@ -39,7 +40,7 @@ async function processData(results: Record<string, any>[]): Promise<void> {
 
   const uniqueTagNames: string[] = Array.from(new Set(tagNames));
   const tags: Tag[] = await addTags(uniqueTagNames);
-  const stores: Store[] = await addStores(res, tags);
+  await addStores(res, tags);
 
   console.log("Done")
 }
