@@ -1,10 +1,16 @@
 {
   "app": {
-    "port": 3000
+    "port": 3000,
+    "defaultURL": "http://localhost:3000"
   },
   "database": {
     "location": "db/development.sqlite3",
     "synchronize": true,
     "logging": true
+  },
+  "secrets": {
+    "cookieSecret": "TIEx8BAwnJgOoALwbMDyK896U6KCsuEZB1lnN3B1S7qhU2HCaVJpIv6tzF6BSD+I1AmJ765WQ3NHf6pa5fnacdUMaEmZg/xxUawc8UO9HQh7dBN5n4eivmimLYmvrwJZSrucP9gQ9uFoTLrFgqEjKDk9LsVNGF7I0MMDIpa6iA4",
+    "GOOGLE_CLIENT_ID": "Generate an id and secret on https://console.developers.google.com/apis/dashboard",
+    "GOOGLE_CLIENT_SECRET": ""
   }
 }

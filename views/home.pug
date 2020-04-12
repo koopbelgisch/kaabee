@@ -4,4 +4,16 @@ ul
   li
     a(href="/winkels") Onze winkels
     li
+      a(href="/winkels") Onze winkels
+    li
       a(href="/tags") Tags
+if currentUser
+  p
+    | Je bent momenteel aangemeld als #{ currentUser.name }. 
+    a(href="/logout") Afmelden
+    | .
+else
+  p
+    | Je bent niet aangemeld. Ga naar de 
+    a(href="/login") aanmeldpagina
+    | .
