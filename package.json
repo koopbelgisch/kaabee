@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "db:seed": "ts-node src/seed.ts",
-    "db:seed-existing": "ts-node src/seedexistingstores.ts",
+    "db:import": "ts-node src/import.ts",
     "watch-build": "tsc -w",
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
@@ -35,7 +35,6 @@
   "dependencies": {
     "csv-parser": "^2.3.2",
     "express": "^4.17.1",
-    "fs": "^0.0.1-security",
     "pug": "^2.0.4",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.1.1",

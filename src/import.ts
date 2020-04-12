@@ -2,8 +2,8 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Store } from "./models/store";
 import { Tag } from "./models/tag";
+import * as fs from "fs";
 import csv = require("csv-parser");
-import fs = require("fs");
 
 async function addTags(tagNames: string[]): Promise<Tag[]> {
   return await Promise.all(tagNames.map(async name => {
@@ -31,7 +31,7 @@ async function processData(results: Record<string, any>[]): Promise<void> {
   await createConnection();
 
   // The last entry is empty & undefined
-  const res = results.slice(0, results.length - 1);
+  const res = results.slice(0, -1);
 
   const tagNames: string[] = res.filter((val: Record<string, any>) => {
     return val["Categorie"] !== undefined && val["Categorie"].length > 0
