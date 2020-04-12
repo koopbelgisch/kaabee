@@ -2,7 +2,7 @@ import "reflect-metadata";
 import * as faker from "faker";
 import { createConnection } from "typeorm";
 import { Store } from "./models/store";
-import {Tag} from "./models/tag";
+import { Tag } from "./models/tag";
 
 function vatnumber(): string {
   return faker.random.number(1999).toString().padStart(4, "0") + "."
