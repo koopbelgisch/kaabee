@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
-import { Tag } from "./tag"
+import { Tag } from "./tag";
 
 @Entity()
 export class Store extends BaseEntity {

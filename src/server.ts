@@ -11,6 +11,6 @@ spawn().then(app => {
       app.get("env")
     );
     console.log("  Press CTRL-C to stop\n");
-  })
+  });
 });
 

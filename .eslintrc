@@ -11,6 +11,7 @@
         "plugin:@typescript-eslint/recommended",
         ],
         "rules": {
+            "@typescript-eslint/semi": ["error", "always"],
             "@typescript-eslint/explicit-member-accessibility": "off",
             "@typescript-eslint/explicit-function-return-type": [
                 "error",
@@ -26,7 +27,7 @@
                 "functions": "only-multiline"
             }],
             "indent": ["error", 2],
-            "max-len": ["warn", { "code": 80 }],
+            "max-len": ["warn", { "code": 120 }],
             "no-invalid-this": "error",
             "no-param-reassign": ["error", { "props": false }],
             "object-curly-spacing": ["error", "always"],
