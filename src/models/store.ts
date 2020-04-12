@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Tag } from "./tag"
 
 @Entity()
 export class Store extends BaseEntity {
@@ -17,6 +18,10 @@ export class Store extends BaseEntity {
 
   @Column({ length: 8 })
   public postcode!: string;
+
+  @ManyToMany(type => Tag, tag => tag.stores)
+  @JoinTable()
+  public tags: Promise<Tag[]>;
 
   constructor() {
     super();
