@@ -37,7 +37,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "csv-parser": "^2.3.2",
+    "@types/config": "^0.0.36",
+    "config": "^3.3.1",
     "express": "^4.17.1",
     "pug": "^2.0.4",
     "reflect-metadata": "^0.1.13",

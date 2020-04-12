@@ -1,20 +1,14 @@
 import "reflect-metadata";
-import express, { Express }from "express";
+import express, { Express } from "express";
 import { createConnection } from "typeorm";
+import config from "config";
 import path from "path";
 
 import * as home from "./controllers/home";
 import * as winkels from "./controllers/winkels";
 import * as tags from "./controllers/tags";
 
-type Environment = "production" | "develop" | "test";
-
-interface Config {
-  verbose?: boolean;
-  environment?: Environment;
-}
-
-export default async function spawn(config: Config = {}): Promise<Express> {
+export default async function spawn(): Promise<Express> {
 
   /**
    * Setup database connection
@@ -27,7 +21,7 @@ export default async function spawn(config: Config = {}): Promise<Express> {
   /**
    * Configuration
    */
-  app.set("port", 3000);
+  app.set("port", config.get("app.port"));
   app.set("views", path.join(__dirname, "../views"));
   app.set("view engine", "pug");
 

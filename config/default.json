@@ -1,0 +1,10 @@
+{
+  "app": {
+    "port": 3000
+  },
+  "database": {
+    "location": "db/development.sqlite3",
+    "synchronize": true,
+    "logging": true
+  }
+}
