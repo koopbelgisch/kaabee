@@ -18,10 +18,13 @@ async function addTags(tagNames: string[]): Promise<Tag[]> {
 async function addStores(storeRecords: Record<string, any>[], tags: Tag[]): Promise<Store[]>{
   return await Promise.all(storeRecords.map(async storeRecord => {
     const store = new Store();
-    store.name = storeRecord["Winkel"];
+    store.name = storeRecord["Naam"];
     store.description = "";
     store.vatnumber = storeRecord["Ondernemingsnummer"];
-    store.postcode = storeRecord["Postcode / Gemeente"];
+    store.postcode = storeRecord["Postcode"];
+    store.email = storeRecord["email"];
+    store.logopath = storeRecord["Logo"];
+    store.site = storeRecord["Site"];
     store.tags = Promise.resolve(tags.filter(tag => tag.name === storeRecord["Categorie"]));
     await store.save();
     return store;

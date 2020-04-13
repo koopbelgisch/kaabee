@@ -6,6 +6,8 @@ ul
   li Beschrijving: #{ store.description }
     li BTW-nummer: #{ store.vatnumber }
     li Postcode: #{ store.postcode }
+    li Email: #{ store.email }
+    li: a(href= store.site ) Site
     li Tags:
       ul
         each val, index in tags

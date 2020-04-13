@@ -24,13 +24,13 @@ export class Store extends BaseEntity {
   public tags: Promise<Tag[]>;
 
   @Column({ length:124 })
-  public logopath!: string;
+  public logopath: string;
 
   @Column({ length: 124 })
   public site!: string;
 
   @Column({ length:124 })
-  public email!: string;
+  public email: string;
 
   constructor() {
     super();
