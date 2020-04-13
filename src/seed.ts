@@ -15,7 +15,7 @@ async function seed(): Promise<void> {
   await createConnection();
 
   // Create some fake tags
-  const tagNames = ["voeding", "doe-het-zelf", "apotheek"]
+  const tagNames = ["voeding", "doe-het-zelf", "apotheek"];
   const tags =
     await Promise.all(tagNames.map(async name => {
       const tag = new Tag();

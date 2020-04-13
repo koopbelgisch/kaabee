@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "db:seed": "ts-node src/seed.ts",
+    "db:import": "ts-node src/import.ts",
     "watch-build": "tsc -w",
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
@@ -20,8 +21,8 @@
     "@types/node": "^13.11.1",
     "@types/pug": "^2.0.4",
     "@types/supertest": "^2.0.8",
-    "@typescript-eslint/parser": "^2.27.0",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
     "ava": "^3.6.0",
     "eslint": "^6.8.0",
     "faker": "^4.1.0",
@@ -32,6 +33,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "csv-parser": "^2.3.2",
     "express": "^4.17.1",
     "pug": "^2.0.4",
     "reflect-metadata": "^0.1.13",
