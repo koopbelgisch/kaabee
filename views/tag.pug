@@ -1,8 +1,0 @@
-h1 Dit zijn alle winkels voor de tag #{ tag.name }
-ul
-  li
-    a(href="/") Home
-ul
-  each val, index in stores
-    li
-      a(href="/winkels/" + val.id) #{val.name}

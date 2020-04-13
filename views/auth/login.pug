@@ -1,0 +1,7 @@
+extends ../layout.pug
+block content
+  h1 Aanmelden:
+  ul
+    li: a(href="/auth/google/login") Registreer of meld je aan met een Google account
+    if env === "development"
+      li: a(href="/auth/dev/login") Of skip de moeite en wordt direct admin.
