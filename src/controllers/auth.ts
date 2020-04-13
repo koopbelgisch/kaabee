@@ -50,7 +50,7 @@ passport.deserializeUser((obj: number, cb) => {
  * themselves.
  */
 export async function login(req: Request, res: Response): Promise<void> {
-  res.render("login", {
+  res.render("auth/login", {
     title: "Login",
   });
 }
