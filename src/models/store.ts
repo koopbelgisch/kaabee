@@ -23,6 +23,15 @@ export class Store extends BaseEntity {
   @JoinTable()
   public tags: Promise<Tag[]>;
 
+  @Column({ length:124 })
+  public logopath: string;
+
+  @Column({ length: 124 })
+  public site: string;
+
+  @Column({ length:124 })
+  public email: string;
+
   constructor() {
     super();
   }
