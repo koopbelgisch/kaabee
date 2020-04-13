@@ -23,7 +23,6 @@ async function seed(): Promise<void> {
       await tag.save();
       return tag;
     }));
-
   // Create some fake stores
   const stores =
     await Promise.all(new Array(1000).fill(undefined).map(async () => {
@@ -32,7 +31,12 @@ async function seed(): Promise<void> {
       store.description = faker.company.catchPhrase();
       store.vatnumber = vatnumber();
       store.postcode = faker.random.number(9999).toString();
+      store.email = faker.internet.email();
+      // Placeholder, faker.system.filePath() returns undefined
+      store.logopath = store.name;
+      store.site = faker.internet.url();
       store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
+
       await store.save();
       return store;
     }));
