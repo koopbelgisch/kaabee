@@ -1,10 +1,9 @@
 import test from "ava";
 import request from "supertest";
 
-import spawn from  "../app";
+import app from "./helpers/app";
 
-test("should get homepage", async t => {
-  const app = await spawn();
-  const resp = await request(app).get("/");
+test("get homepage", async t => {
+  const resp = await request(await app()).get("/");
   t.is(resp.status, 200);
 });
