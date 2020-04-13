@@ -12,7 +12,7 @@ async function addTags(tagNames: string[]): Promise<Tag[]> {
     tag.name = name;
     await tag.save();
     return tag;
-  }))
+  }));
 }
 
 async function addStores(storeRecords: Record<string, any>[], tags: Tag[]): Promise<Store[]>{
@@ -24,8 +24,8 @@ async function addStores(storeRecords: Record<string, any>[], tags: Tag[]): Prom
     store.postcode = storeRecord["Postcode / Gemeente"];
     store.tags = Promise.resolve(tags.filter(tag => tag.name === storeRecord["Categorie"]));
     await store.save();
-    return store
-  }))
+    return store;
+  }));
 }
 
 async function processData(results: Record<string, any>[]): Promise<void> {
@@ -35,14 +35,14 @@ async function processData(results: Record<string, any>[]): Promise<void> {
   const res = results.slice(0, -1);
 
   const tagNames: string[] = res.filter((val: Record<string, any>) => {
-    return val["Categorie"] !== undefined && val["Categorie"].length > 0
+    return val["Categorie"] !== undefined && val["Categorie"].length > 0;
   }).map((val: Record<string, any>) => val["Categorie"]);
 
   const uniqueTagNames: string[] = Array.from(new Set(tagNames));
   const tags: Tag[] = await addTags(uniqueTagNames);
   await addStores(res, tags);
 
-  console.log("Done")
+  console.log("Done");
 }
 
 async function seedActualStores(): Promise<void> {

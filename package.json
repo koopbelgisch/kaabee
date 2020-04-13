@@ -12,7 +12,9 @@
     "dev": "yarn run watch-serve",
     "test": "nyc ava",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "lint": "eslint --ext .ts ."
+    "lint:ts": "eslint --ext .ts .",
+    "lint:pug": "pug-lint views/",
+    "lint": "yarn run lint:ts && yarn run lint:pug"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
@@ -28,6 +30,8 @@
     "faker": "^4.1.0",
     "nodemon": "^2.0.3",
     "nyc": "^15.0.1",
+    "pug-lint": "^2.6.0",
+    "pug-lint-config-clock": "^2.0.0",
     "supertest": "^4.0.2",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"

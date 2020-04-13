@@ -1,8 +1,8 @@
 h1 Dit zijn alle tags.
 ul
-    li
-        a(href="/") Home
+  li
+    a(href="/") Home
 ul
-    each val, index in tags
-        li
-            a(href="/tags/" + val.id) #{val.name}
+  each val, index in tags
+    li
+      a(href="/tags/" + val.id) #{val.name}
