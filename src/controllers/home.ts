@@ -8,8 +8,6 @@ import { Store } from "../models/store";
 export async function index(req: Request, res: Response): Promise<void> {
   res.render("home", {
     title: "KaaBee",
-    flash: req.flash,
-    currentUser: req.user,
     storeCount: await Store.count(),
   });
 }

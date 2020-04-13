@@ -14,6 +14,7 @@ import * as tags from "./controllers/tags";
 import * as auth from "./controllers/auth";
 
 export default async function spawn(): Promise<Express> {
+  const env = config.util.getEnv("NODE_ENV");
 
   /**
    * Setup database connection
@@ -46,6 +47,14 @@ export default async function spawn(): Promise<Express> {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // Make useful variables available in the views
+  app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    res.locals.flash = req.flash();
+    res.locals.env = env;
+    next();
+  });
+
   /**
    * App Routes
    */
@@ -64,6 +73,9 @@ export default async function spawn(): Promise<Express> {
         successFlash: "Je bent aangemeld!"
       })
   );
+  if (env === "development") {
+    app.get("/auth/dev/login", auth.devLogin);
+  }
 
   // Home page
   app.get("/", home.index);

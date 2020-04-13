@@ -6,7 +6,7 @@ import { User } from "../models/user";
  * A list of all users.
  */
 export async function index(req: Request, res: Response): Promise<void> {
-  res.render("home", {
+  res.render("users/index", {
     title: "KaaBee",
     userCount: await User.count(),
     users: await User.find(),

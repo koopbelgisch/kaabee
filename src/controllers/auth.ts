@@ -1,3 +1,4 @@
+import util from "util";
 import config from "config";
 import passport from "passport";
 import { Request, Response } from "express";
@@ -33,7 +34,13 @@ passport.use(new GoogleStrategy({
 
 passport.serializeUser((user: User, cb) => cb(null, user.id));
 passport.deserializeUser((obj: number, cb) => {
-  callbackize(async () => User.findOne({ id: obj }), cb);
+  User.findOne({ id: obj }).then(user => {
+    if (user) {
+      cb(null, user);
+    } else {
+      cb("Something went wrong. Try clearing your cookies for this site.");
+    }
+  });
 });
 
 /**
@@ -45,7 +52,6 @@ passport.deserializeUser((obj: number, cb) => {
 export async function login(req: Request, res: Response): Promise<void> {
   res.render("login", {
     title: "Login",
-    flash: req.flash,
   });
 }
 
@@ -55,7 +61,30 @@ export async function login(req: Request, res: Response): Promise<void> {
  * Destroy the user's session.
  */
 export async function logout(req: Request, res: Response): Promise<void> {
-  req.flash("info", "Je werd afgemeld.");
   req.session = null;
+  req.flash("info", "Je werd afgemeld.");
   res.redirect("/");
+}
+
+/**
+ * GET /auth/dev/login
+ *
+ * Log in as the user with id 1. Should only be available in development mode.
+ */
+export async function devLogin(req: Request, res: Response): Promise<void> {
+  console.log(req.ip);
+  console.log(req.hostname);
+  if (config.util.getEnv("NODE_ENV") === "development" && req.hostname === "localhost") {
+    const user = await User.findOne({ id: 1  });
+    const login = util.promisify(req.login);
+    if (user) {
+      login(user);
+      req.flash("success", `Ingelogd als ${user.name}`);
+    } else {
+      req.flash("fout", "Gebruiker met id 1 bestaat niet, dus we konden je niet inloggen.");
+    }
+    res.redirect("/");
+  } else {
+    throw new Error("Somebody tried to access devLogin, help!");
+  }
 }
