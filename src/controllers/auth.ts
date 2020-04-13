@@ -55,7 +55,7 @@ export async function login(req: Request, res: Response): Promise<void> {
  * Destroy the user's session.
  */
 export async function logout(req: Request, res: Response): Promise<void> {
-  req.flash("info", "Je werd afgemeld.")
+  req.flash("info", "Je werd afgemeld.");
   req.session = null;
   res.redirect("/");
 }
