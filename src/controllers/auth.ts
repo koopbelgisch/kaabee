@@ -61,7 +61,7 @@ export async function login(req: Request, res: Response): Promise<void> {
  * Destroy the user's session.
  */
 export async function logout(req: Request, res: Response): Promise<void> {
-  req.session = null;
+  req.logout();
   req.flash("info", "Je werd afgemeld.");
   res.redirect("/");
 }
@@ -72,18 +72,25 @@ export async function logout(req: Request, res: Response): Promise<void> {
  * Log in as the user with id 1. Should only be available in development mode.
  */
 export async function devLogin(req: Request, res: Response): Promise<void> {
-  console.log(req.ip);
-  console.log(req.hostname);
   if (config.util.getEnv("NODE_ENV") === "development" && req.hostname === "localhost") {
-    const user = await User.findOne({ id: 1  });
-    const login = util.promisify(req.login);
-    if (user) {
-      login(user);
-      req.flash("success", `Ingelogd als ${user.name}`);
-    } else {
-      req.flash("fout", "Gebruiker met id 1 bestaat niet, dus we konden je niet inloggen.");
+    let user = await User.findOne({ admin: true  }); // Find a random admin user
+    if (!user) {
+      user = new User();
+      user.name = "admin";
+      user.provider = "admin";
+      user.providerId = "AUTOMATISCH AANGEMAAKT";
+      user.email = "admin@localhost";
+      user.admin = true;
+      await user.save();
     }
-    res.redirect("/");
+    req.login(user, () => {
+      if (user) {
+        req.flash("success", `Ingelogd als ${user.name}`);
+      } else {
+        req.flash("error", "Er liep iets mis bij het inlogen. Fix uw code.");
+      }
+      return res.redirect("/");
+    });
   } else {
     throw new Error("Somebody tried to access devLogin, help!");
   }
