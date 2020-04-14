@@ -31,6 +31,9 @@ export default async function spawn(config: Config = {}): Promise<Express> {
   app.set("views", path.join(__dirname, "../views"));
   app.set("view engine", "pug");
 
+  console.log(path.join(__dirname, "logos"))
+  app.use("/logos", express.static(path.join(__dirname, "logos")));
+
   /**
    * App Routes
    */

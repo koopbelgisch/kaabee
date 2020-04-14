@@ -23,7 +23,7 @@ async function addStores(storeRecords: Record<string, any>[], tags: Tag[]): Prom
     store.vatnumber = storeRecord["Ondernemingsnummer"];
     store.postcode = storeRecord["Postcode"];
     store.email = storeRecord["email"];
-    store.logopath = storeRecord["Logo"];
+    store.logopath = storeRecord["savepath"];
     store.site = storeRecord["Site"];
     store.tags = Promise.resolve(tags.filter(tag => tag.name === storeRecord["Categorie"]));
     await store.save();
@@ -53,7 +53,7 @@ async function seedActualStores(): Promise<void> {
   const results: Record<string, any>[] = [];
   // Read in the existing csv, first process all tagnames
   // Then process the stores (don't have descriptions yet)
-  fs.createReadStream("data/data.csv")
+  fs.createReadStream("data/data_logo.csv")
     .pipe(csv())
     .on("data", (data: Record<string, any>) => results.push(data))
     .on("end", () => processData(results));
