@@ -8,7 +8,7 @@ import { Tag } from "../models/tag";
  */
 export async function getTags(req: Request, res: Response): Promise<void> {
   const tags = await getManager().find(Tag);
-  res.render("tags", { tags: tags });
+  res.render("pages/tags", { tags: tags });
 }
 
 /**
@@ -19,6 +19,6 @@ export async function getTag(req: Request, res: Response): Promise<void> {
   const tag = await getRepository(Tag).findOne(req.params["tagId"]);
   if (tag !== undefined) {
     const stores = await tag.stores;
-    res.render("tag", { tag: tag, stores: stores });
+    res.render("pages/tag", { tag: tag, stores: stores });
   }
 }

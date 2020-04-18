@@ -8,7 +8,7 @@ import { Store } from "../models/store";
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
   const stores = await getManager().find(Store);
-  res.render("stores", { stores: stores });
+  res.render("pages/stores", { stores: stores });
 }
 
 /**
@@ -19,7 +19,7 @@ export async function getStore(req: Request, res: Response): Promise<void> {
   const store = await getRepository(Store).findOne(req.params["storeId"]);
   if (store !== undefined) {
     const tags = await store.tags;
-    res.render("store", { store: store, tags: tags });
+    res.render("pages/store", { store: store, tags: tags });
   }
 }
 

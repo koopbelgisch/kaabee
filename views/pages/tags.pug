@@ -1,0 +1,7 @@
+extends ../layout.pug
+block content
+  h1 Dit zijn alle tags.
+  ul
+    each val, index in tags
+      li
+        a(href="/tags/" + val.id) #{val.name}
