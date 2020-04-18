@@ -32,6 +32,11 @@ export default async function spawn(config: Config = {}): Promise<Express> {
   app.set("view engine", "pug");
 
   /**
+   * Static public dir
+   */
+  app.use(express.static(path.join(__dirname, "../public")));
+
+  /**
    * App Routes
    */
   // Home page
