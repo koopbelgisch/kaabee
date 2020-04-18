@@ -15,7 +15,7 @@
     "lint:ts": "eslint --ext .ts .",
     "lint:pug": "pug-lint views/",
     "lint": "yarn run lint:ts && yarn run lint:pug",
-    "watch-scss": "node-sass --watch scss/index.scss -o public/css/style.css",
+    "watch-scss": "node-sass --watch scss/index.scss public/css/style.css",
     "scss": "node-sass scss/index.scss public/css/style.css"
   },
   "devDependencies": {

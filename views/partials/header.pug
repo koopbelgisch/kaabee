@@ -1,2 +1,47 @@
-nav
-  a(href="/") Home
+section(class="navigation")
+  div(class="nav-container")
+    div(class="brand")
+      a(href="#!") Kaabee
+    nav
+      div(class="nav-mobile")
+        a(id="nav-toggle" href="#!")
+          span
+      ul(class="nav-list")
+        li
+          a(href="/") Home
+        li
+          a(href="/winkels") Winkels
+        li
+          a(href="#!") Tags
+          ul(class="nav-dropdown")
+            // Dit is gewoon om de dropdown te testen
+            li
+              a(href="/tags/1") doe-het-zelf
+            li
+              a(href="/tags/2") apotheek
+            li
+              a(href="/tags/3") voeding
+      script(src="/vendor/jquery.min.js")
+      script(type="text/javascript").
+        (function($) {
+          $(function() {
+              // DOM Ready
+              // This code shows dropdowns on click
+              $('nav ul li > a:not(:only-child)').click(function(e) {
+                  // Toggle current dropdown
+                  $(this).siblings('.nav-dropdown').toggle();
+                  // Hide all other dropdowns
+                  $('.nav-dropdown').not($(this).siblings()).hide();
+                  e.stopPropagation();
+              });
+              // Clicking away from dropdown will remove it
+              $("html").click(function() {
+                  $('.nav-dropdown').hide();
+              });
+              // Toggle open and close nav styles on click
+              $('#nav-toggle').click(function() {
+                  this.classList.toggle('active');
+                  $("nav ul").slideToggle();
+              });
+          })
+        })(jQuery);
