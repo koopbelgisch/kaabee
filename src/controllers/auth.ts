@@ -1,4 +1,3 @@
-import util from "util";
 import config from "config";
 import passport from "passport";
 import { Request, Response } from "express";
