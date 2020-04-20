@@ -2,6 +2,7 @@ import config from "config";
 import passport from "passport";
 import { Request, Response } from "express";
 import { Strategy as GoogleStrategy, VerifyCallback } from "passport-google-oauth2";
+import { Strategy as FacebookStrategy } from "passport-facebook";
 
 import { User, ProviderProfile } from "../models/user";
 
@@ -24,10 +25,19 @@ passport.use(new GoogleStrategy({
 },
 (_at, _rt, profile, callback: VerifyCallback) => {
   if(profile.verified) {
-    callbackize(async () => await User.findOrCreate(profile as ProviderProfile), callback);
+    callbackize(async () => await User.findOrCreate("google", profile as ProviderProfile), callback);
   } else {
     return callback(new Error("User profile is not verified"));
   }
+}));
+
+passport.use(new FacebookStrategy({
+  clientID: config.get("secrets.FACEBOOK_APP_ID"),
+  clientSecret: config.get("secrets.FACEBOOK_APP_SECRET"),
+  callbackURL: `${config.get("app.defaultURL")}/auth/facebook/return`
+},
+(_at, _rt, profile, callback: VerifyCallback) => {
+  callbackize(async () => await User.findOrCreate("facebook", profile as ProviderProfile), callback);
 }));
 
 
@@ -63,6 +73,71 @@ export async function logout(req: Request, res: Response): Promise<void> {
   req.logout();
   req.flash("info", "Je werd afgemeld.");
   res.redirect("/");
+}
+
+/**
+ * GET /auth/email/check
+ *
+ * Check if a user has a registered email and handle approriately.
+ */
+export async function emailCheck(req: Request, res: Response): Promise<void> {
+  const user = req.user as User | undefined;
+  if (!user) {
+    res.redirect("/login");
+  } else if (user.hasConfirmedEmail()) {
+    req.flash("success", "Je bent aangemeld!");
+    res.redirect("/");
+  } else if (user.email) {
+    res.redirect("/auth/email/waitconfirm");
+  } else {
+    res.render("auth/emailRequest");
+  }
+}
+
+/**
+ * POST /auth/email/submit
+ *
+ * A user submits their email for cofirmation
+ */
+export async function emailSubmit(req: Request, res: Response): Promise<void> {
+  const user = req.user as User | undefined;
+  if (!user) {
+    res.redirect("/login");
+  } else {
+    const email = req.body.email || "";
+    user.email = email;
+    const errors = await user.validate();
+    if (errors.length > 0) {
+      res.render("auth/emailRequest", { errors: errors });
+    } else {
+      res.redirect("/auth/email/waitconfirm");
+    }
+  }
+}
+
+/**
+ * GET /auth/email/waiting
+ *
+ * A user's email is not yet confirmed. Tell them we're waiting.
+ */
+export async function emailWaiting(req: Request, res: Response): Promise<void> {
+  const user = req.user as User | undefined;
+  if (!user) {
+    res.redirect("/login");
+  } else if (user.hasConfirmedEmail()) {
+    res.redirect("/");
+  } else {
+    res.render("auth/waitconfirm");
+  }
+}
+
+/**
+ * GET /auth/email/confirm
+ *
+ * A user tries to confirm their email.
+ */
+export async function emailConfirm(req: Request, res: Response): Promise<void> {
+  const token = req.params.token;
 }
 
 /**

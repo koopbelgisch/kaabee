@@ -69,10 +69,26 @@ export default async function spawn(): Promise<Express> {
       "google",
       { failureRedirect: "/login",
         failureFlash: true,
-        successRedirect: "/",
+        successRedirect: "/auth/email/check",
         successFlash: "Je bent aangemeld!"
       })
   );
+  app.get("/auth/facebook/login", passport.authenticate("facebook"));
+  app.get(
+    "/auth/facebook/return",
+    passport.authenticate(
+      "facebook",
+      { failureRedirect: "/login",
+        failureFlash: true,
+        successRedirect: "/auth/email/check"
+      })
+  );
+
+  app.get("/auth/email/check", auth.emailCheck);
+  app.post("/auth/email/submit", auth.emailSubmit);
+  app.get("/auth/email/wait", auth.emailWaiting);
+  app.get("/auth/email/confirm", auth.emailConfirm);
+
   if (env === "development") {
     app.get("/auth/dev/login", auth.devLogin);
   }

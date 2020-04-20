@@ -415,6 +415,14 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/passport-facebook@^2.1.9":
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/@types/passport-facebook/-/passport-facebook-2.1.9.tgz#0181b40be4e002705f7a29d64da9029c2ab464dc"
+  integrity sha512-7Y5aHo35Io9fRvStBgXasf+6rRJ5SMiu1D3+cnUuxM1GS+QlgFnH+YTZjye0XgF4EWzxlXKTeLlK2DFU8+0Jpw==
+  dependencies:
+    "@types/express" "*"
+    "@types/passport" "*"
+
 "@types/passport-google-oauth2@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@types/passport-google-oauth2/-/passport-google-oauth2-0.1.3.tgz#aec076e9fbba28e0efb4ac06b8db8e36b8cb3621"
@@ -422,7 +430,7 @@
   dependencies:
     "@types/express" "*"
 
-"@types/passport@^1.0.3":
+"@types/passport@*", "@types/passport@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@types/passport/-/passport-1.0.3.tgz#e459ed6c262bf0686684d1b05901be0d0b192a9c"
   integrity sha512-nyztuxtDPQv9utCzU0qW7Gl8BY2Dn8BKlYAFFyxKipFxjaVd96celbkLCV/tRqqBUZ+JB8If3UfgV8347DTo3Q==
@@ -466,6 +474,11 @@
   integrity sha512-wcax7/ip4XSSJRLbNzEIUVy2xjcBIZZAuSd2vtltQfRK7kxhx5WMHbLHkYdxN3wuQCrwpYrg86/9byDjPXoGMA==
   dependencies:
     "@types/superagent" "*"
+
+"@types/validator@13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.0.0.tgz#365f1bf936aeaddd0856fc41aa1d6f82d88ee5b3"
+  integrity sha512-WAy5txG7aFX8Vw3sloEKp5p/t/Xt8jD3GRD9DacnFv6Vo8ubudAsRTXgxpQwU0mpzY/H8U4db3roDuCMjShBmw==
 
 "@typescript-eslint/eslint-plugin@^2.28.0":
   version "2.28.0"
@@ -1109,6 +1122,15 @@ ci-parallel-vars@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ci-parallel-vars/-/ci-parallel-vars-1.0.0.tgz#af97729ed1c7381911ca37bcea263d62638701b3"
   integrity sha512-u6dx20FBXm+apMi+5x7UVm6EH7BL1gc4XrcnQewjcB7HWRcor/V5qWc3RG2HwpgDJ26gIi2DSEu3B7sXynAw/g==
+
+class-validator@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/class-validator/-/class-validator-0.12.1.tgz#9e89a9b7e8288ac07e0b9f5586cc089369d22790"
+  integrity sha512-vdhhOk3Juyu1EAyvka0K0rZjwGJf0JJqAeoBkLG0oSHp73HYcELwumHRHGhxydJIhg+qO81HkqrZiC39aajetw==
+  dependencies:
+    "@types/validator" "13.0.0"
+    google-libphonenumber "^3.2.8"
+    validator "13.0.0"
 
 clean-css@^4.1.11:
   version "4.2.3"
@@ -2182,6 +2204,11 @@ globby@^11.0.0:
     ignore "^5.1.4"
     merge2 "^1.3.0"
     slash "^3.0.0"
+
+google-libphonenumber@^3.2.8:
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.8.tgz#fb5898cbae18104d456e0fd80df52d860a3eb2b8"
+  integrity sha512-iWs1KcxOozmKQbCeGjvU0M7urrkNjBYOSBtb819RjkUNJHJLfn7DADKkKwdJTOMPLcLOE11/4h/FyFwJsTiwLg==
 
 got@^9.6.0:
   version "9.6.0"
@@ -3436,6 +3463,13 @@ parseurl@~1.3.3:
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
   integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
 
+passport-facebook@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/passport-facebook/-/passport-facebook-3.0.0.tgz#b16f7314128be55d020a2b75f574c194bd6d9805"
+  integrity sha512-K/qNzuFsFISYAyC1Nma4qgY/12V3RSLFdFVsPKXiKZt434wOvthFW1p7zKa1iQihQMRhaWorVE1o3Vi1o+ZgeQ==
+  dependencies:
+    passport-oauth2 "1.x.x"
+
 passport-google-oauth2@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/passport-google-oauth2/-/passport-google-oauth2-0.2.0.tgz#fc9ea59e7091f02e24fd16d6be9257ea982ebbc3"
@@ -3443,7 +3477,7 @@ passport-google-oauth2@^0.2.0:
   dependencies:
     passport-oauth2 "^1.1.2"
 
-passport-oauth2@^1.1.2:
+passport-oauth2@1.x.x, passport-oauth2@^1.1.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/passport-oauth2/-/passport-oauth2-1.5.0.tgz#64babbb54ac46a4dcab35e7f266ed5294e3c4108"
   integrity sha512-kqBt6vR/5VlCK8iCx1/KpY42kQ+NEHZwsSyt4Y6STiNjU+wWICG1i8ucc1FapXDGO15C5O5VZz7+7vRzrDPXXQ==
@@ -4734,6 +4768,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.0.0.tgz#0fb6c6bb5218ea23d368a8347e6d0f5a70e3bcab"
+  integrity sha512-anYx5fURbgF04lQV18nEQWZ/3wHGnxiKdG4aL8J+jEDsm98n/sU/bey+tYk6tnGJzm7ioh5FoqrAiQ6m03IgaA==
 
 vary@~1.1.2:
   version "1.1.2"

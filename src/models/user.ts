@@ -1,14 +1,18 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { IsEmail } from "class-validator";
+
+import { KaabeeEntity } from "./kaabeeEntity";
+
+type Provider = "facebook" | "google";
 
 export interface ProviderProfile {
-  provider: string;
   id: string;
   displayName: string;
-  email: string;
+  email?: string;
 }
 
 @Entity()
-export class User extends BaseEntity {
+export class User extends KaabeeEntity {
 
   @PrimaryGeneratedColumn()
   public id!: number;
@@ -20,7 +24,17 @@ export class User extends BaseEntity {
   public name!: string;
 
   @Column({ length: 255 })
+  @IsEmail()
   public email!: string;
+
+  @Column()
+  public emailConfirmed: boolean;
+
+  @Column()
+  public emailToken: string;
+
+  @Column()
+  public emailTokenExpiry: string;
 
   @Column({ length: 63 })
   public provider!: string;
@@ -32,16 +46,22 @@ export class User extends BaseEntity {
     super();
   }
 
-  public static async findOrCreate(profile: ProviderProfile): Promise<User> {
-    let user = await User.findOne({ provider: profile.provider, providerId: profile.id });
+  public static async findOrCreate(provider: Provider, profile: ProviderProfile): Promise<User> {
+    let user = await User.findOne({ provider: provider, providerId: profile.id });
     if (user === undefined) {
       user = new User();
-      user.provider = profile.provider;
+      user.provider = provider;
       user.providerId = profile.id;
       user.name = profile.displayName;
-      user.email = profile.email;
+      if(profile.email) {
+        user.email = profile.email;
+      }
       await user.save();
     }
     return user;
+  }
+
+  public hasConfirmedEmail(): boolean {
+    return this.email !== undefined && this.emailConfirmed;
   }
 }
