@@ -27,7 +27,7 @@ passport.use(new GoogleStrategy({
   if(profile.verified) {
     callbackize(async () => await User.findOrCreate("google", profile as ProviderProfile), callback);
   } else {
-    return callback(new Error("User profile is not verified"));
+    return callback(new Error("User account is not verified."));
   }
 }));
 
