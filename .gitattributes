@@ -1,2 +1,2 @@
 config/production.json filter=git-crypt diff=git-crypt
-config/staging.json filter=git-crypt diff=git-crypt
+config/developlogin.json filter=git-crypt diff=git-crypt
