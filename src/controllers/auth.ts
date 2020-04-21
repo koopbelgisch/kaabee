@@ -5,6 +5,7 @@ import { Strategy as GoogleStrategy, VerifyCallback } from "passport-google-oaut
 import { Strategy as FacebookStrategy } from "passport-facebook";
 
 import { User, ProviderProfile } from "../models/user";
+import env from "../helpers/env";
 
 /**
  * Helper function to let an async Promise work with a callback function.
@@ -158,7 +159,7 @@ export async function emailConfirm(req: Request, res: Response): Promise<void> {
  * Log in as the user with id 1. Should only be available in development mode.
  */
 export async function devLogin(req: Request, res: Response): Promise<void> {
-  if (config.util.getEnv("NODE_ENV") === "development" && req.hostname === "localhost") {
+  if (env.isDev && req.hostname === "localhost") {
     let user = await User.findOne({ admin: true  }); // Find a random admin user
     if (!user) {
       user = new User();

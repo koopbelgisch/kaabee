@@ -4,5 +4,5 @@ block content
   ul
     li: a(href="/auth/google/login") Registreer of meld je aan met een Google account
     li: a(href="/auth/facebook/login") Registreer of meld je aan met een Facebook account
-    if env === "development"
+    if env.isDev
       li: a(href="/auth/dev/login") Of skip de moeite en wordt direct admin.

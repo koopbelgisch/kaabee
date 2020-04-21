@@ -5,8 +5,9 @@ import { createConnection } from "typeorm";
 import flash from "connect-flash";
 import config from "config";
 import path from "path";
-
 import passport from "passport";
+
+import env from "./helpers/env";
 
 import * as home from "./controllers/home";
 import * as winkels from "./controllers/winkels";
@@ -14,7 +15,6 @@ import * as tags from "./controllers/tags";
 import * as auth from "./controllers/auth";
 
 export default async function spawn(): Promise<Express> {
-  const env = config.util.getEnv("NODE_ENV");
 
   /**
    * Setup database connection
@@ -91,7 +91,7 @@ export default async function spawn(): Promise<Express> {
   app.get("/auth/email/confirm", auth.emailConfirm);
   */
 
-  if (env === "development") {
+  if (env.isDev) {
     app.get("/auth/dev/login", auth.devLogin);
   }
 
