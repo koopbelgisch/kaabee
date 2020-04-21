@@ -31,10 +31,10 @@ export class User extends KaabeeEntity {
   public emailConfirmed!: boolean;
 
   @Column({ nullable: true })
-  public emailToken!: string;
+  public emailToken!: string | null;
 
-  @Column({ nullable: true })
-  public emailTokenExpiry!: string;
+  @Column({ default: 0 })
+  public emailTokenExpiry!: number;
 
   @Column({ length: 63 })
   public provider!: string;
