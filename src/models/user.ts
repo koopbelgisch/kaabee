@@ -28,13 +28,13 @@ export class User extends KaabeeEntity {
   public email!: string;
 
   @Column()
-  public emailConfirmed: boolean;
+  public emailConfirmed!: boolean;
 
-  @Column()
-  public emailToken: string;
+  @Column({ nullable: true })
+  public emailToken!: string;
 
-  @Column()
-  public emailTokenExpiry: string;
+  @Column({ nullable: true })
+  public emailTokenExpiry!: string;
 
   @Column({ length: 63 })
   public provider!: string;

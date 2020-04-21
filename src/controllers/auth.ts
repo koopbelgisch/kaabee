@@ -154,6 +154,7 @@ export async function devLogin(req: Request, res: Response): Promise<void> {
       user.provider = "admin";
       user.providerId = "AUTOMATISCH AANGEMAAKT";
       user.email = "admin@localhost";
+      user.emailConfirmed = true;
       user.admin = true;
       await user.save();
     }
