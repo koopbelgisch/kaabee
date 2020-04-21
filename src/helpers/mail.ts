@@ -1,6 +1,8 @@
 import config from "config";
-import { Transporter, TransportOptions, TestAccount, createTestAccount, createTransport, getTestMessageUrl } from "nodemailer";
+import { compileFile } from "pug";
+import { Transporter, TestAccount, createTestAccount, createTransport, getTestMessageUrl } from "nodemailer";
 
+import { User } from "../models/user";
 import env from "./env";
 
 let mailer: Transporter | null = null;
@@ -36,17 +38,28 @@ async function getMailer(): Promise<Transporter> {
   return mailer;
 }
 
-export default async function mail(options: {
-  from?: string;
-  to: string;
-  subject: string;
-  text: string;
-}): Promise<void> {
+export async function mail(
+  options: {
+    from?: string;
+    to: string;
+    subject: string;
+    html: string;
+  }
+): Promise<void> {
   const mailer = await getMailer();
   const info = await mailer.sendMail(options);
   console.log("Message sent: %s", info.messageId);
   if (testAccount) {
     console.log("Preview URL: %s", getTestMessageUrl(info));
   }
+}
+
+const confirmationTemplate = compileFile(__dirname + "/../../views/mail/emailConfirmation.pug");
+export async function sendEmailConfirmation(user: User): Promise<void> {
+  const html = confirmationTemplate({
+    user: user,
+    url: `${config.get("app.defaultURL")}/auth/email/confirm/${user.emailToken}`
+  });
+  return mail({ to: user.email, subject: "[Kaabee] Bevestig je email", html });
 }
 

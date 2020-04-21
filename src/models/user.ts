@@ -1,6 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
-import { IsEmail } from "class-validator";
+import { IsEmail, ValidationError } from "class-validator";
+import config from "config";
 
+import { randomURLSafe } from "../helpers/security";
 import { KaabeeEntity } from "./kaabeeEntity";
 
 type Provider = "facebook" | "google";
@@ -70,5 +72,31 @@ export class User extends KaabeeEntity {
 
   public hasConfirmedEmail(): boolean {
     return this.email !== undefined && this.emailConfirmed;
+  }
+
+  public async setEmail(email: string): Promise<Array<ValidationError>> {
+    this.email = email;
+    this.emailToken = await randomURLSafe(256),
+    this.emailTokenExpiry = Date.now() + (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
+    const errors = await this.validate();
+    if (errors.length === 0) {
+      this.save();
+    }
+    return errors;
+  }
+
+  public static async confirmEmail(token?: string): Promise<User | null> {
+    if (!token) {
+      return null;
+    }
+    const user = await User.findOne({ emailToken: token });
+    if (!user || user.emailTokenExpiry > Date.now()) {
+      return null;
+    } else {
+      user.emailConfirmed = true;
+      user.emailToken = undefined;
+      user.emailTokenExpiry = 0;
+      return user.save();
+    }
   }
 }

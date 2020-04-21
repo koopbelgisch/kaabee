@@ -32,6 +32,9 @@ export default async function spawn(): Promise<Express> {
   app.set("views", path.join(__dirname, "../views"));
   app.set("view engine", "pug");
 
+  // Parse request bodies
+  app.use(express.urlencoded({ extended: true }));
+
   // Allows the use of req.flash for passing messages.
   app.use(flash());
 

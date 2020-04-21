@@ -5,6 +5,7 @@ import { Strategy as GoogleStrategy, VerifyCallback } from "passport-google-oaut
 import { Strategy as FacebookStrategy } from "passport-facebook";
 
 import { User, ProviderProfile } from "../models/user";
+import { sendEmailConfirmation } from "../helpers/mail";
 import env from "../helpers/env";
 
 /**
@@ -88,8 +89,6 @@ export async function emailCheck(req: Request, res: Response): Promise<void> {
   } else if (user.hasConfirmedEmail()) {
     req.flash("success", "Je bent aangemeld!");
     res.redirect("/");
-  } else if (user.email) {
-    res.redirect("/auth/email/waitconfirm");
   } else {
     res.render("auth/emailRequest");
   }
@@ -105,13 +104,12 @@ export async function emailSubmit(req: Request, res: Response): Promise<void> {
   if (!user) {
     res.redirect("/login");
   } else {
-    const email = req.body.email || "";
-    user.email = email;
-    const errors = await user.validate();
+    const errors = await user.setEmail(req.body?.email);
     if (errors.length > 0) {
       res.render("auth/emailRequest", { errors: errors });
     } else {
-      res.redirect("/auth/email/waitconfirm");
+      await sendEmailConfirmation(user);
+      res.redirect("/auth/email/wait");
     }
   }
 }
@@ -128,7 +126,7 @@ export async function emailWaiting(req: Request, res: Response): Promise<void> {
   } else if (user.hasConfirmedEmail()) {
     res.redirect("/");
   } else {
-    res.render("auth/waitconfirm");
+    res.render("auth/emailWait");
   }
 }
 
@@ -138,13 +136,8 @@ export async function emailWaiting(req: Request, res: Response): Promise<void> {
  * A user tries to confirm their email.
  */
 export async function emailConfirm(req: Request, res: Response): Promise<void> {
-  const token = req.params.token;
-  const user = token ? await User.findOne({ emailToken: token }) : null;
-  if(user && user.emailTokenExpiry > Date.now()) {
-    user.emailConfirmed = true;
-    user.emailToken = undefined;
-    user.emailTokenExpiry = 0;
-    await user.save();
+  const user = await User.confirmEmail(req.params.token);
+  if(user) {
     req.flash("success", `Je e-mail '${user.email}' is bevestigd.`);
     res.redirect("/");
   } else {
