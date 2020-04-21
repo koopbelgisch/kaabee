@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
 import { IsEmail } from "class-validator";
 
 import { KaabeeEntity } from "./kaabeeEntity";
@@ -20,18 +20,25 @@ export class User extends KaabeeEntity {
   @Column({ default: false })
   public admin!: boolean;
 
+  @Index()
   @Column({ length: 63 })
   public name!: string;
 
-  @Column({ length: 255 })
+  @Index()
+  @Column({
+    length: 255,
+    nullable: true,
+    unique: true,
+  })
   @IsEmail()
   public email!: string;
 
-  @Column()
+  @Column({ default: false })
   public emailConfirmed!: boolean;
 
+  @Index()
   @Column({ nullable: true })
-  public emailToken!: string | null;
+  public emailToken?: string;
 
   @Column({ default: 0 })
   public emailTokenExpiry!: number;

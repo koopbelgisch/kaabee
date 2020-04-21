@@ -141,7 +141,7 @@ export async function emailConfirm(req: Request, res: Response): Promise<void> {
   const user = token ? await User.findOne({ emailToken: token }) : null;
   if(user && user.emailTokenExpiry > Date.now()) {
     user.emailConfirmed = true;
-    user.emailToken = null;
+    user.emailToken = undefined;
     user.emailTokenExpiry = 0;
     await user.save();
     req.flash("success", `Je e-mail '${user.email}' is bevestigd.`);
