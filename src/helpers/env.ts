@@ -20,6 +20,14 @@ export class Environment {
     return this.isDev;
   }
 
+  get isTest(): boolean {
+    return this.environment.startsWith("test");
+  }
+
+  get isProd(): boolean {
+    return !this.isDev && !this.isTest;
+  }
+
 }
 
 const env = new Environment();
