@@ -1,45 +1,23 @@
-section(class="navigation")
-  div(class="nav-container")
-    div(class="brand")
-      a(href="#!") Kaabee
-    nav
-      div(class="nav-mobile")
-        a(id="nav-toggle" href="#!")
-          span
-      ul(class="nav-list")
-        li
-          a(href="/") Home
-        li
-          a(href="/winkels") Winkels
-        li
-          a(href="#!") Tags
-          ul(class="nav-dropdown")
-            // Dit is gewoon om de dropdown te testen
-            li
-              a(href="/tags/1") doe-het-zelf
-            li
-              a(href="/tags/2") apotheek
-            li
-              a(href="/tags/3") voeding
-      script(src="/vendor/cash.min.js")
-      script(type="text/javascript").
-        $(function() {
-            // DOM Ready
-            // This code shows dropdowns on click
-            $('nav ul li > a:not(:only-child)').on("click", function(e) {
-                // Toggle current dropdown
-                $(this).siblings('.nav-dropdown').toggle();
-                // Hide all other dropdowns
-                $('.nav-dropdown').not($(this).siblings()).hide();
-                e.stopPropagation();
-            });
-            // Clicking away from dropdown will remove it
-            $("html").on("click", function() {
-                $('.nav-dropdown').hide();
-            });
-            // Toggle open and close nav styles on click
-            $('#nav-toggle').on("click", function() {
-                this.classList.toggle('active');
-                $("nav ul").slideToggle();
-            });
-        });
+nav(class="navbar is-light" role="navigation" aria-label="main navigation")
+  div(class="navbar-brand")
+    a(class="navbar-item") Kaabee
+    a(role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainNavBar")
+      span(aria-hidden="true")
+      span(aria-hidden="true")
+      span(aria-hidden="true")
+  div(id="mainNavBar" class="navbar-menu")
+    div(class="navbar-start")
+      a(class="navbar-item" href="/") Home
+      a(class="navbar-item" href="/winkels") Winkels
+      div(class="navbar-item has-dropdown is-hoverable")
+        a(class="navbar-link" href="/tags") Tags
+        div(class="navbar-dropdown")
+          a(class="navbar-item" href="/tags/1") doe-het-zelf
+          a(class="navbar-item" href="/tags/2") apotheek
+          a(class="navbar-item" href="/tags/3") voeding
+    div(class="navbar-end")
+      div(class="navbar-item")
+        div(class="buttons")
+          a(class="button is-primary")
+            strong Registreren
+          a(class="button is-light") Aanmelden
