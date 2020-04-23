@@ -21,27 +21,25 @@ section(class="navigation")
               a(href="/tags/2") apotheek
             li
               a(href="/tags/3") voeding
-      script(src="/vendor/jquery.min.js")
+      script(src="/vendor/cash.min.js")
       script(type="text/javascript").
-        (function($) {
-          $(function() {
-              // DOM Ready
-              // This code shows dropdowns on click
-              $('nav ul li > a:not(:only-child)').click(function(e) {
-                  // Toggle current dropdown
-                  $(this).siblings('.nav-dropdown').toggle();
-                  // Hide all other dropdowns
-                  $('.nav-dropdown').not($(this).siblings()).hide();
-                  e.stopPropagation();
-              });
-              // Clicking away from dropdown will remove it
-              $("html").click(function() {
-                  $('.nav-dropdown').hide();
-              });
-              // Toggle open and close nav styles on click
-              $('#nav-toggle').click(function() {
-                  this.classList.toggle('active');
-                  $("nav ul").slideToggle();
-              });
-          })
-        })(jQuery);
+        $(function() {
+            // DOM Ready
+            // This code shows dropdowns on click
+            $('nav ul li > a:not(:only-child)').on("click", function(e) {
+                // Toggle current dropdown
+                $(this).siblings('.nav-dropdown').toggle();
+                // Hide all other dropdowns
+                $('.nav-dropdown').not($(this).siblings()).hide();
+                e.stopPropagation();
+            });
+            // Clicking away from dropdown will remove it
+            $("html").on("click", function() {
+                $('.nav-dropdown').hide();
+            });
+            // Toggle open and close nav styles on click
+            $('#nav-toggle').on("click", function() {
+                this.classList.toggle('active');
+                $("nav ul").slideToggle();
+            });
+        });
