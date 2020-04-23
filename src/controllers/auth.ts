@@ -141,7 +141,7 @@ export async function emailConfirm(req: Request, res: Response): Promise<void> {
     req.flash("success", `Je e-mail '${user.email}' is bevestigd.`);
     res.redirect("/");
   } else {
-    req.flash("error", "We konden je e-mail niet bevestigen. De email");
+    req.flash("error", "We konden je e-mail niet bevestigen.");
     res.redirect("/");
   }
 }
