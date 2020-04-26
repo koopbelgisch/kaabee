@@ -7,12 +7,10 @@ html(lang="nl")
     title #{title}
     //meta(name="description", content="")
     //meta(name="theme-color" content="#4DA5F4")
-    //link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/style.css")
 
   body
     include partials/header.pug
-
     main
       block content
-
-        include partials/footer.pug
+    include partials/footer.pug
