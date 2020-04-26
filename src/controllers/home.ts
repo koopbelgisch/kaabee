@@ -6,7 +6,7 @@ import { Store } from "../models/store";
  * Home page.
  */
 export async function index(req: Request, res: Response): Promise<void> {
-  res.render("pages/home", {
+  res.render("home/index", {
     title: "KaaBee",
     storeCount: await Store.count(),
   });
