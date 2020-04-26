@@ -9,7 +9,7 @@ export class Tag extends BaseEntity {
   @Column({ length: 63 })
   public name!: string;
 
-  @ManyToMany(type => Store, store => store.tags)
+  @ManyToMany(() => Store, store => store.tags)
   public stores: Promise<Store[]>;
 
   constructor() {

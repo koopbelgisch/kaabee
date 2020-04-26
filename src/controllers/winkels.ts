@@ -27,6 +27,6 @@ export async function getStore(req: Request, res: Response): Promise<void> {
  * POST /stores
  * Adds new store in database
  */
-export async function addStore(req: Request, res: Response): Promise<void> {
+export async function addStore(req: Request): Promise<void> {
   console.log("Adding store:", req.body);
 }

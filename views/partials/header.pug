@@ -2,9 +2,22 @@ each message, type in flash
   span
     em #{ type }
     | : #{ message}
-
-nav
-  ul
-    li: a(href="/") Home
-    li: a(href="/winkels") Onze winkels
-    li: a(href="/tags") Tags
+    
+nav.navbar.is-light(role="navigation", aria-label="main navigation")
+  .navbar-brand
+  //a(class="navbar-item") Kaabee
+  a.navbar-burger.burger(role="button", aria-label="menu", aria-expanded="false", data-target="mainNavBar")
+    span(aria-hidden="true")
+    span(aria-hidden="true")
+    span(aria-hidden="true")
+  .navbar-menu(id="mainNavBar")
+    .navbar-start
+      a.navbar-item(href="/") Home
+      a.navbar-item(href="/winkels") Winkels
+      a.navbar-item(href="/tags") Tags
+    .navbar-end
+      .navbar-item
+        .buttons
+          a.button.is-primary
+            strong Registreren
+          a.button.is-light Aanmelden

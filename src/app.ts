@@ -59,6 +59,11 @@ export default async function spawn(): Promise<Express> {
   });
 
   /**
+   * Static public dir
+   */
+  app.use(express.static(path.join(__dirname, "../public")));
+
+  /**
    * App Routes
    */
 
