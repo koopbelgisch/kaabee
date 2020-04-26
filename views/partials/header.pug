@@ -3,14 +3,14 @@ each message, type in flash
     em #{ type }
     | : #{ message}
     
-nav(class="navbar is-light" role="navigation" aria-label="main navigation")
+nav.navbar.is-light(role="navigation", aria-label="main navigation")
   .navbar-brand
   //a(class="navbar-item") Kaabee
-  a(role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="mainNavBar")
+  a.navbar-burger.burger(role="button", aria-label="menu", aria-expanded="false", data-target="mainNavBar")
     span(aria-hidden="true")
     span(aria-hidden="true")
     span(aria-hidden="true")
-  .navbar-menu#mainNavBar
+  .navbar-menu(id="mainNavBar")
     .navbar-start
       a.navbar-item(href="/") Home
       a.navbar-item(href="/winkels") Winkels
@@ -18,6 +18,6 @@ nav(class="navbar is-light" role="navigation" aria-label="main navigation")
     .navbar-end
       .navbar-item
         .buttons
-          a(class="button is-primary")
+          a.button.is-primary
             strong Registreren
-          a(class="button is-light") Aanmelden
+          a.button.is-light Aanmelden
