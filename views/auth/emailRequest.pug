@@ -1,0 +1,12 @@
+
+p Om je meldingen te kunnen sturen hebben we je email nodig.
+
+if errors
+  h1 Er waren errors:
+  ul
+    each error in errors
+      li #{ error }
+
+form(action="/auth/email/submit", method="post")
+  input(type="email", name="email", value=email, required)
+  input(type="submit", value="Verstuur")
