@@ -15,8 +15,8 @@ export async function getStores(req: Request, res: Response): Promise<void> {
     let query = manager.createQueryBuilder(Store, "store");
     if (req.query.name_desc !== undefined) {
       query = query
-        .where("store.name like :name_desc", { name_desc: "%" + req.query.name_desc + "%" })
-        .orWhere("store.description like :name_desc", { name_desc: "%" + req.query.name_desc + "%" });
+        .where("store.name like :nameDesc", { nameDesc: "%" + req.query.name_desc + "%" })
+        .orWhere("store.description like :nameDesc", { nameDesc: "%" + req.query.name_desc + "%" });
     }
     if (req.query.postal !== undefined) {
       query = query
