@@ -1,7 +1,33 @@
 extends ../layout.pug
 block content
-  h1 Dit zijn al onze winkels.
-  ul
-    each val, index in stores
-      li
-        a(href="/winkels/" + val.id) #{val.name}
+  section.section
+    .container
+      h1.title Zoeken
+      form
+        .field.is-horizontal
+          .field-label.is-normal
+            label.label Naam
+          .field-body
+            .field
+              p.control.is-expanded
+                input.input(type="text" placeholder="Vandemaele NV")
+        .field.is-horizontal
+          .field-label.is-normal
+            label.label Postcode
+          .field-body
+            .field
+              p.control.is-expanded
+                input.input(type="text" placeholder="8501")
+        .field.is-horizontal
+          .field-label
+          .field-body
+            .field
+              .control
+                button.button.is-primary Zoeken
+  section.section
+    .container
+      h1.title Resultaten
+      ul
+        each val, index in stores
+          li
+            a(href="/winkels/" + val.id) #{val.name}
