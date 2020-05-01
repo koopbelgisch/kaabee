@@ -5,27 +5,27 @@ block content
   section.section
     .container
       h1.title Zoeken
-      form#search_form(action="/winkels" method="get")
+      form#search_form(action="/winkels", method="get")
         .field.is-horizontal
           .field-label.is-normal
             label.label(for="name_desc") Naam/beschrijving
           .field-body
             .field
               p.control.is-expanded
-                input.input#name_desc(name="name_desc" type="text" placeholder="Vandemaele NV")
+                input.input#name_desc(name="name_desc", type="text", placeholder="Vandemaele NV")
         .field.is-horizontal
           .field-label.is-normal
             label.label(for="postal") Postcode
           .field-body
             .field
               p.control.is-expanded
-                input.input#postal(name="postal" type="text" placeholder="8501")
+                input.input#postal(name="postal", type="text", placeholder="8501")
         .field.is-horizontal
           .field-label
           .field-body
             .field
               .control
-                input.button.is-primary(type="submit" value="Zoeken")
+                input.button.is-primary(type="submit", value="Zoeken")
   section.section
     .container
       h1.title Resultaten
