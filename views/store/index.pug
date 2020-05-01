@@ -5,7 +5,7 @@ block content
   section.section
     .container
       h1.title Zoeken
-      form(action="/winkels" method="get")
+      form#search_form(action="/winkels" method="get")
         .field.is-horizontal
           .field-label.is-normal
             label.label(for="name_desc") Naam/beschrijving
@@ -33,3 +33,16 @@ block content
         each val, index in stores
           li
             a(href="/winkels/" + val.id) #{val.name}
+  script.
+    $(() => {
+        $(function () {
+            $("#search_form").on("submit", function () {
+                $("#search_form *").filter(":input").each(function () {
+                    if ($(this).val() === '')
+                        $(this).prop("disabled", true);
+                });
+
+                return true; // ensure form still submits
+            });
+        });
+    });
