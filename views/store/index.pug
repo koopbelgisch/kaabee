@@ -1,29 +1,31 @@
 extends ../layout.pug
 block content
   section.section
+    h1.title.is-1 Onze winkels
+  section.section
     .container
       h1.title Zoeken
-      form
+      form(action="/winkels" method="get")
         .field.is-horizontal
           .field-label.is-normal
-            label.label Naam
+            label.label(for="name_desc") Naam/beschrijving
           .field-body
             .field
               p.control.is-expanded
-                input.input(type="text" placeholder="Vandemaele NV")
+                input.input#name_desc(name="name_desc" type="text" placeholder="Vandemaele NV")
         .field.is-horizontal
           .field-label.is-normal
-            label.label Postcode
+            label.label(for="postal") Postcode
           .field-body
             .field
               p.control.is-expanded
-                input.input(type="text" placeholder="8501")
+                input.input#postal(name="postal" type="text" placeholder="8501")
         .field.is-horizontal
           .field-label
           .field-body
             .field
               .control
-                button.button.is-primary Zoeken
+                input.button.is-primary(type="submit" value="Zoeken")
   section.section
     .container
       h1.title Resultaten
