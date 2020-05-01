@@ -7,7 +7,28 @@ import { Store } from "../models/store";
  * Shows all stores
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
-  const stores = await getManager().find(Store);
+  //let stores = await getManager().find(Store);
+  const manager = await getManager();
+  let stores;
+
+  if (Object.keys(req.query).length !== 0) {
+    // A search query was passed
+    console.log("Search query:", req.query);
+    let query = manager.createQueryBuilder(Store, "store");
+    if (req.query.name_desc !== undefined) {
+      query = query
+        .where("store.name like :name_desc", {name_desc: req.query.name_desc})
+        .orWhere("store.description like :name_desc", {name_desc: req.query.name_desc});
+    }
+    if (req.query.postal !== undefined) {
+      query = query
+        .where("store.postcode = :postal", {postal: req.query.postal});
+    }
+    stores = await query.getMany();
+  } else {
+    stores = await manager.find(Store);
+  }
+
   res.render("store/index", { stores: stores });
 }
 
