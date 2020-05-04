@@ -106,8 +106,10 @@ export default async function spawn(): Promise<Express> {
 
   // Winkels
   app.get("/winkels", winkels.getStores);
+  app.post("/winkels/:storeId", winkels.adaptStore);
   app.get("/winkels/:storeId", winkels.getStore);
   app.post("/winkels", winkels.addStore);
+  app.get("/winkels/:storeId/update", winkels.showAdaptStore);
 
   // Tags
   app.get("/tags", tags.getTags);

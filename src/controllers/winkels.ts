@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getManager, getRepository } from "typeorm";
 import { Store } from "../models/store";
+import { Tag } from "../models/tag";
 
 /**
  * GET /winkels
@@ -28,5 +29,58 @@ export async function getStore(req: Request, res: Response): Promise<void> {
  * Adds new store in database
  */
 export async function addStore(req: Request): Promise<void> {
+  console.log("HERE");
   console.log("Adding store:", req.body);
 }
+
+/**
+ * Show the adaptation page for stores
+ */
+export async function showAdaptStore(req: Request, res: Response): Promise<void> {
+  const store = await getRepository(Store).findOne(req.params["storeId"]);
+  if (store !== undefined) {
+    const tags = await store.tags;
+    const allTags =  await getManager().find(Tag);
+    res.render("store/adapt", { store: store, tags: tags, allTags: allTags });
+  }
+}
+
+export async function adaptStore(req: Request, res: Response): Promise<void> {
+  const store = await getRepository(Store).findOne(req.params["storeId"]);
+
+  console.log(req.body);
+  console.log(Object.keys(req.body));
+
+  if (store !== undefined) {
+    store.name = req.body["Name"];
+    store.description = req.body["Description"];
+    store.postcode = req.body["Postcode"];
+    store.site = req.body["Site"];
+    store.email = req.body["Email"];
+
+    const allTags =  await getManager().find(Tag);
+    const checkedTags = await allTags.filter(t => Object.keys(req.body).indexOf(t.name) > -1);
+    store.tags = Promise.resolve(checkedTags);
+
+    await getRepository(Store).save(store);
+    res.render("store/show", { store: store, tags: checkedTags });
+  }
+
+
+  // console.log("Adapt");
+  // // Get store
+  // const store = await getRepository(Store).findOne(req.params["storeId"]);
+  // if (store !== undefined) {
+  //   store = await getRepository(Store).update(req.params["storeId"], { name: "Updated"});
+  //   await getConnection().createQueryBuilder().update(Store).set({ name: "Updated" })
+  //     .where("id = :id", { id: 3 }).execute();
+  //
+  //   const tags = await store.tags;
+  //   const storeUpd = await getRepository(Store).findOne(req.params["storeId"]);
+  //   res.render("store/show", { store: storeUpd, tags: tags });
+  //   // Adapt values
+  //
+  // }
+
+}
+

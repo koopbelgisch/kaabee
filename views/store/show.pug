@@ -2,9 +2,14 @@ extends ../layout.pug
 block content
   h1 Dit is de pagina voor de winkel #{ store.name }.
   ul
+    li
+      a(href="/winkels/" + store.id + "/update") Adapt #{store.name}
     li Beschrijving: #{ store.description }
       li BTW-nummer: #{ store.vatnumber }
       li Postcode: #{ store.postcode }
+      li
+        a(href=store.site) Website
+      li Email: #{ store.email }
       li Tags:
         ul
           each val, index in tags
