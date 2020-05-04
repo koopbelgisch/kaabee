@@ -65,22 +65,5 @@ export async function adaptStore(req: Request, res: Response): Promise<void> {
     await getRepository(Store).save(store);
     res.render("store/show", { store: store, tags: checkedTags });
   }
-
-
-  // console.log("Adapt");
-  // // Get store
-  // const store = await getRepository(Store).findOne(req.params["storeId"]);
-  // if (store !== undefined) {
-  //   store = await getRepository(Store).update(req.params["storeId"], { name: "Updated"});
-  //   await getConnection().createQueryBuilder().update(Store).set({ name: "Updated" })
-  //     .where("id = :id", { id: 3 }).execute();
-  //
-  //   const tags = await store.tags;
-  //   const storeUpd = await getRepository(Store).findOne(req.params["storeId"]);
-  //   res.render("store/show", { store: storeUpd, tags: tags });
-  //   // Adapt values
-  //
-  // }
-
 }
 
