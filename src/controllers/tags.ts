@@ -15,7 +15,7 @@ export async function getTags(req: Request, res: Response): Promise<void> {
  * Shows all stores for tag with given id
  */
 export async function getTag(req: Request, res: Response): Promise<void> {
-  const tag = await Tag.findOne(req.params["tagId"])
+  const tag = await Tag.findOne(req.params["tagId"]);
   if (tag !== undefined) {
     const stores = await tag.stores;
     res.render("tag/show", { tag: tag, stores: stores });

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import {Like, FindOperator} from "typeorm";
+import { Like, FindOperator } from "typeorm";
 import { Store } from "../models/store";
-import Dict = NodeJS.Dict;
 
 /**
  * GET /winkels
@@ -12,17 +11,17 @@ export async function getStores(req: Request, res: Response): Promise<void> {
 
   if (Object.keys(req.query).length !== 0) {
     // A search query was passed
-    let queryDict = {where: [] as Record<string, FindOperator<any>>[]};
+    const queryDict = { where: [] as Record<string, FindOperator<string>>[] };
     if (req.query.name_desc !== undefined) {
-      queryDict.where.push({name: Like("%" + req.query.name_desc + "%")});
-      queryDict.where.push({description: Like("%" + req.query.name_desc + "%")});
+      queryDict.where.push({ name: Like("%" + req.query.name_desc + "%") });
+      queryDict.where.push({ description: Like("%" + req.query.name_desc + "%") });
       if (req.query.postal !== undefined) {
         queryDict.where.forEach(obj => {
-          obj.postcode = Like(req.query.postal)
+          obj.postcode = Like(req.query.postal);
         });
       }
     } else if (req.query.postal !== undefined) {
-      queryDict.where.push({postcode: req.query.postal});
+      queryDict.where.push({ postcode: req.query.postal });
     }
     stores = await Store.find(queryDict);
   } else {
