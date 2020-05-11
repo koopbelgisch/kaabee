@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {Like, getRepository, FindOperator} from "typeorm";
+import {Like, FindOperator} from "typeorm";
 import { Store } from "../models/store";
 import Dict = NodeJS.Dict;
 
@@ -36,7 +36,7 @@ export async function getStores(req: Request, res: Response): Promise<void> {
  * Shows page for store with given id
  */
 export async function getStore(req: Request, res: Response): Promise<void> {
-  const store = await getRepository(Store).findOne(req.params["storeId"]);
+  const store = await Store.findOne(req.params["storeId"]);
   if (store !== undefined) {
     const tags = await store.tags;
     res.render("store/show", { store: store, tags: tags });
