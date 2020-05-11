@@ -1,32 +1,33 @@
 import { Request, Response } from "express";
-import { getManager, getRepository } from "typeorm";
+import {Like, getRepository, FindOperator} from "typeorm";
 import { Store } from "../models/store";
+import Dict = NodeJS.Dict;
 
 /**
  * GET /winkels
  * Shows all stores
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
-  const manager = await getManager();
   let stores;
 
   if (Object.keys(req.query).length !== 0) {
     // A search query was passed
-    let query = manager.createQueryBuilder(Store, "store");
+    let queryDict = {where: [] as Record<string, FindOperator<any>>[]};
     if (req.query.name_desc !== undefined) {
-      query = query
-        .where("store.name like :nameDesc", { nameDesc: "%" + req.query.name_desc + "%" })
-        .orWhere("store.description like :nameDesc", { nameDesc: "%" + req.query.name_desc + "%" });
+      queryDict.where.push({name: Like("%" + req.query.name_desc + "%")});
+      queryDict.where.push({description: Like("%" + req.query.name_desc + "%")});
+      if (req.query.postal !== undefined) {
+        queryDict.where.forEach(obj => {
+          obj.postcode = Like(req.query.postal)
+        });
+      }
+    } else if (req.query.postal !== undefined) {
+      queryDict.where.push({postcode: req.query.postal});
     }
-    if (req.query.postal !== undefined) {
-      query = query
-        .where("store.postcode = :postal", { postal: req.query.postal });
-    }
-    stores = await query.getMany();
+    stores = await Store.find(queryDict);
   } else {
-    stores = await manager.find(Store);
+    stores = await Store.find();
   }
-  console.log(stores);
   res.render("store/index", { stores: stores });
 }
 
