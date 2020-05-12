@@ -1,10 +1,16 @@
 extends ../layout.pug
 block content
   h1 Dit is de pagina voor de winkel #{ store.name }.
+  img(src=store.logopath, alt=store.name)
+  ul
+    li
+      a(href="/") Home
   ul
     li Beschrijving: #{ store.description }
       li BTW-nummer: #{ store.vatnumber }
       li Postcode: #{ store.postcode }
+      li Email: #{ store.email }
+      li: a(href= store.site) Site
       li Tags:
         ul
           each val, index in tags

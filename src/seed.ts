@@ -33,7 +33,7 @@ async function seed(): Promise<void> {
       store.postcode = faker.random.number(9999).toString();
       store.email = faker.internet.email();
       // Placeholder, faker.system.filePath() returns undefined
-      store.logopath = store.name;
+      store.logopath = "/logos/test.png";
       store.site = faker.internet.url();
       store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
 
