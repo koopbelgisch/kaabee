@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Like, FindOperator } from "typeorm";
+import { Brackets } from "typeorm";
 import { Store } from "../models/store";
 
 /**
@@ -7,27 +7,25 @@ import { Store } from "../models/store";
  * Shows all stores
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
-  let stores;
+  let query = Store.createQueryBuilder();
 
   if (Object.keys(req.query).length !== 0) {
+
     // A search query was passed
-    const queryDict = { where: [] as Record<string, FindOperator<string>>[] };
-    if (req.query.name_desc !== undefined) {
-      queryDict.where.push({ name: Like("%" + req.query.name_desc + "%") });
-      queryDict.where.push({ description: Like("%" + req.query.name_desc + "%") });
-      if (req.query.postal !== undefined) {
-        queryDict.where.forEach(obj => {
-          obj.postcode = Like(req.query.postal);
-        });
-      }
-    } else if (req.query.postal !== undefined) {
-      queryDict.where.push({ postcode: req.query.postal });
+    if (req.query.name_desc) {
+      query = query.where(new Brackets(qb => {
+        qb.where("store.name like :name", { name: "%" + req.query.name_desc + "%" })
+          .orWhere("store.description like :desc", { desc: "%" + req.query.name_desc + "%" });
+      }));
     }
-    stores = await Store.find(queryDict);
-  } else {
-    stores = await Store.find();
+
+    if (req.query.postal) {
+      query = query.andWhere("store.postcode = :postcode", { postcode: req.query.postal });
+    }
   }
-  res.render("store/index", { stores: stores });
+
+  const stores = await query.getMany();
+  res.render("store/index", { stores });
 }
 
 /**
