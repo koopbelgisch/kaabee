@@ -1,9 +1,6 @@
-import test from "ava";
-import request from "supertest";
-
-import app from "./helpers/app";
+import test from "./helpers/test";
 
 test("get homepage", async t => {
-  const resp = await request(await app()).get("/");
+  const resp = await t.context.request.get("/");
   t.is(resp.status, 200);
 });

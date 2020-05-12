@@ -1,14 +1,11 @@
-import test from "ava";
-import request from "supertest";
-
-import app from "./helpers/app";
+import test from "./helpers/test";
 
 test("get login page", async t => {
-  const resp = await request(await app()).get("/login");
+  const resp = await t.context.request.get("/login");
   t.is(resp.status, 200);
 });
 
 test("get login with google", async t => {
-  const resp = await request(await app()).get("/auth/google/login");
+  const resp = await t.context.request.get("/auth/google/login");
   t.is(resp.status, 302);
 });
