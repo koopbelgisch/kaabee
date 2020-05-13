@@ -32,6 +32,8 @@ export default async function spawn(): Promise<Express> {
   app.set("views", path.join(__dirname, "../views"));
   app.set("view engine", "pug");
 
+  app.use("/logos", express.static(path.join(__dirname, "..", "data", "logos")));
+
   // Parse request bodies
   app.use(express.urlencoded({ extended: true }));
 
