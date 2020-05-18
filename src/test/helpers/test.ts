@@ -1,16 +1,29 @@
 import avaTest, { ExecutionContext, TestInterface } from "ava";
+import axios, { AxiosInstance } from "axios";
+import http from "http";
+import listen from "test-listen";
 import spawn from  "../../app";
-import request, { SuperTest, Test } from "supertest";
 
 export interface Context {
-    request: SuperTest<Test>;
+    app: AxiosInstance;
+    server: http.Server;
 }
 
 const test = avaTest as TestInterface<Context>;
 
-test.before(async (t: ExecutionContext<Context>) => {
-  const app = await spawn();
-  t.context = { request: request(app) };
+test.beforeEach(async (t: ExecutionContext<Context>) => {
+  const server = http.createServer(await spawn());
+  const url = await listen(server);
+  const app = axios.create({
+    baseURL: url,
+    maxRedirects: 0,
+    validateStatus: () => true,
+  });
+  t.context = { server, app };
+});
+
+test.afterEach.always(t => {
+  t.context.server.close();
 });
 
 export default test;
