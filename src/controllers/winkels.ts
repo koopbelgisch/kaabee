@@ -24,9 +24,8 @@ export async function getStores(req: Request, res: Response): Promise<void> {
     }
 
     if (req.query.tag) {
-      console.log(req.query.tag)
       query = query.leftJoinAndSelect("store.tags", "tag")
-        .andWhere("tag.id = :tag", {tag: req.query.tag})
+        .andWhere("tag.id = :tag", { tag: req.query.tag });
     }
   }
 
