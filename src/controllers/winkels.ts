@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { Brackets } from "typeorm";
 import { Store } from "../models/store";
+import { Tag } from "../models/tag";
 
 /**
  * GET /winkels
  * Shows all stores
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
-  let query = Store.createQueryBuilder();
+  let query = Store.createQueryBuilder("store");
 
   if (Object.keys(req.query).length !== 0) {
-
     // A search query was passed
     if (req.query.name_desc) {
       query = query.where(new Brackets(qb => {
@@ -22,10 +22,17 @@ export async function getStores(req: Request, res: Response): Promise<void> {
     if (req.query.postal) {
       query = query.andWhere("store.postcode = :postcode", { postcode: req.query.postal });
     }
+
+    if (req.query.tag) {
+      console.log(req.query.tag)
+      query = query.leftJoinAndSelect("store.tags", "tag")
+        .andWhere("tag.id = :tag", {tag: req.query.tag})
+    }
   }
 
   const stores = await query.getMany();
-  res.render("store/index", { stores });
+  const tags = await Tag.find();
+  res.render("store/index", { stores, tags });
 }
 
 /**

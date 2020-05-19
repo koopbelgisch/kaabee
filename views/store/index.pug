@@ -21,6 +21,17 @@ block content
               p.control.is-expanded
                 input.input#postal(name="postal", type="text", placeholder="8501")
         .field.is-horizontal
+          .field-label.is-normal
+            label.label(for="tag") Tag
+          .field-body
+            .field
+              p.control.is-expanded
+                .select
+                  select#tag(name="tag")
+                    option(value="") Alle tags
+                    each val, index in tags
+                      option(value=val.id) #{val.name}
+        .field.is-horizontal
           .field-label
           .field-body
             .field
