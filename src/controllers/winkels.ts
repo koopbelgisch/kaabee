@@ -9,6 +9,11 @@ import { Tag } from "../models/tag";
  */
 export async function getStores(req: Request, res: Response): Promise<void> {
   let query = Store.createQueryBuilder("store");
+  const formData = {
+    nameDesc: "",
+    postal: "",
+    tag: ""
+  }; // Used to prevent form from being emptied after refresh
 
   if (Object.keys(req.query).length !== 0) {
     // A search query was passed
@@ -17,21 +22,24 @@ export async function getStores(req: Request, res: Response): Promise<void> {
         qb.where("store.name like :name", { name: "%" + req.query.name_desc + "%" })
           .orWhere("store.description like :desc", { desc: "%" + req.query.name_desc + "%" });
       }));
+      formData.nameDesc = req.query.name_desc;
     }
 
     if (req.query.postal) {
       query = query.andWhere("store.postcode = :postcode", { postcode: req.query.postal });
+      formData.postal = req.query.postal;
     }
 
     if (req.query.tag) {
       query = query.leftJoinAndSelect("store.tags", "tag")
         .andWhere("tag.id = :tag", { tag: req.query.tag });
+      formData.tag = req.query.tag;
     }
   }
 
   const stores = await query.getMany();
   const tags = await Tag.find();
-  res.render("store/index", { stores, tags });
+  res.render("store/index", { stores, tags, formData });
 }
 
 /**

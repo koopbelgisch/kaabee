@@ -12,14 +12,14 @@ block content
           .field-body
             .field
               p.control.is-expanded
-                input.input#name_desc(name="name_desc", type="text", placeholder="Vandemaele NV")
+                input.input#name_desc(name="name_desc", type="text", placeholder="Vandemaele NV", value=formData.nameDesc)
         .field.is-horizontal
           .field-label.is-normal
             label.label(for="postal") Postcode
           .field-body
             .field
               p.control.is-expanded
-                input.input#postal(name="postal", type="text", placeholder="8501")
+                input.input#postal(name="postal", type="text", placeholder="8501", value=formData.postal)
         .field.is-horizontal
           .field-label.is-normal
             label.label(for="tag") Tag
@@ -28,9 +28,9 @@ block content
               p.control.is-expanded
                 .select
                   select#tag(name="tag")
-                    option(value="") Alle tags
+                    option(value="", selected=!formData.tag) Alle tags
                     each val, index in tags
-                      option(value=val.id) #{val.name}
+                      option(value=val.id, selected=(formData.tag === val.id.toString())) #{val.name}
         .field.is-horizontal
           .field-label
           .field-body
