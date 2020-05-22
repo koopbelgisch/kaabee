@@ -10,7 +10,7 @@
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
     "dev": "yarn run watch-serve",
-    "test": "nyc ava",
+    "test": "yarn build && ava",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "lint:ts": "eslint --ext .ts .",
     "lint:pug": "pug-lint views/",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
+    "@types/config": "^0.0.36",
     "@types/connect-flash": "^0.0.35",
     "@types/cookie-session": "^2.0.39",
     "@types/express": "4.17.4",
@@ -37,18 +38,15 @@
     "axios": "^0.19.2",
     "bulma": "^0.8.2",
     "eslint": "^6.8.0",
-    "esm": "^3.2.25",
     "faker": "^4.1.0",
     "nodemon": "^2.0.3",
     "nyc": "^15.0.1",
     "pug-lint": "^2.6.0",
     "pug-lint-config-clock": "^2.0.0",
     "test-listen": "^1.1.0",
-    "ts-node": "^8.10.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   },
   "dependencies": {
-    "@types/config": "^0.0.36",
     "class-validator": "^0.12.2",
     "config": "^3.3.1",
     "connect-flash": "^0.1.1",
@@ -64,5 +62,16 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.2.0",
     "typeorm": "^0.2.24"
+  },
+  "ava": {
+    "timeout": "60s",
+    "files": [
+      "src/test/*.test.ts"
+    ],
+    "typescript": {
+      "rewritePaths": {
+        "src/": "dist/"
+      }
+    }
   }
 }
