@@ -25,6 +25,7 @@
     "@types/cookie-session": "^2.0.39",
     "@types/express": "4.17.4",
     "@types/faker": "^4.1.11",
+    "@types/jest": "^25.2.3",
     "@types/node": "^13.13.5",
     "@types/nodemailer": "^6.4.0",
     "@types/passport": "^1.0.3",
@@ -39,11 +40,13 @@
     "bulma": "^0.8.2",
     "eslint": "^6.8.0",
     "faker": "^4.1.0",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.3",
     "nyc": "^15.0.1",
     "pug-lint": "^2.6.0",
     "pug-lint-config-clock": "^2.0.0",
     "test-listen": "^1.1.0",
+    "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   },
   "dependencies": {
