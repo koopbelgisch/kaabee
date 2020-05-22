@@ -7,10 +7,10 @@ test("get login page", async t => {
 
 test("get login with google", async t => {
   const resp = await t.context.app.get("/auth/google/login");
-  t.is(resp.status, 200);
+  t.is(resp.status, 302);
 });
 
 test("get login with facebook", async t => {
   const resp = await t.context.app.get("/auth/facebook/login");
-  t.is(resp.status, 200);
+  t.is(resp.status, 302);
 });

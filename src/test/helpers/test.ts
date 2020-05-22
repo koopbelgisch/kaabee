@@ -17,6 +17,7 @@ test.beforeEach(async (t: ExecutionContext<Context>) => {
   const app = axios.create({
     baseURL: url,
     maxRedirects: 0,
+    timeout: 2000,
     validateStatus: () => true,
   });
   t.context = { server, app };

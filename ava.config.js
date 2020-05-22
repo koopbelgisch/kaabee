@@ -4,10 +4,15 @@ export default {
     "src/test/**.ts",
     "!src/test/helpers/"
   ],
-  extensions: [
-    "ts"
-  ],
   require: [
-    "ts-node/register"
-  ]
+    "esm",
+  ],
+  nodeArguments: [
+    "--experimental-modules"
+  ],
+  typescript: {
+    rewritePaths: {
+      "src/": "dist/"
+    }
+  }
 };
