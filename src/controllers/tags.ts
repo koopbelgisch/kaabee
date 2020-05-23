@@ -20,5 +20,8 @@ export async function getTag(req: Request, res: Response): Promise<void> {
   if (tag !== undefined) {
     const stores = await tag.stores;
     res.render("tag/show", { tag: tag, stores: stores });
+  } else {
+    res.status(404);
+    res.send("Not found");
   }
 }

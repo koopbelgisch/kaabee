@@ -15,7 +15,7 @@ test("get tag index", async () => {
   expect(resp.status).toBe(200);
 });
 
-test.skip("get tag show", async () => {
+test("get tag show", async () => {
   const resp = await t.app.get("/tag/1");
   expect(resp.status).toBe(200);
 });

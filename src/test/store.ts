@@ -14,7 +14,7 @@ test("get store index", async () => {
   expect(resp.status).toBe(200);
 });
 
-test.skip("get store show", async () => {
+test("get store show", async () => {
   const resp = await t.app.get("/winkels/1");
   expect(resp.status).toBe(200);
 });
