@@ -1,11 +1,21 @@
-import test from "./helpers/test";
+import { launch, TestInstance } from "./helper";
 
-test("get tag index", async t => {
-  const resp = await t.context.app.get("/tags");
-  t.is(resp.status, 200);
+let t: TestInstance;
+beforeAll(async () => {
+  t = await launch();
 });
 
-test("get tag show", async t => {
-  const resp = await t.context.app.get("/tag/1");
-  t.is(resp.status, 200);
+afterAll(async () => {
+  await t.server.close();
+});
+
+
+test("get tag index", async () => {
+  const resp = await t.app.get("/tags");
+  expect(resp.status).toBe(200);
+});
+
+test.skip("get tag show", async () => {
+  const resp = await t.app.get("/tag/1");
+  expect(resp.status).toBe(200);
 });

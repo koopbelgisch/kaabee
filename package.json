@@ -10,7 +10,7 @@
     "serve": "node ./dist/server.js",
     "watch-serve": "nodemon",
     "dev": "yarn run watch-serve",
-    "test": "yarn build && ava",
+    "test": "yarn build && yarn run jest",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "lint:ts": "eslint --ext .ts .",
     "lint:pug": "pug-lint views/",
@@ -19,7 +19,6 @@
     "scss": "node-sass scss/index.scss public/css/style.css"
   },
   "devDependencies": {
-    "@ava/typescript": "^1.1.1",
     "@types/config": "^0.0.36",
     "@types/connect-flash": "^0.0.35",
     "@types/cookie-session": "^2.0.39",
@@ -35,7 +34,6 @@
     "@types/test-listen": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^2.32.0",
     "@typescript-eslint/parser": "^2.32.0",
-    "ava": "^3.8.2",
     "axios": "^0.19.2",
     "bulma": "^0.8.2",
     "eslint": "^6.8.0",
@@ -65,16 +63,5 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.2.0",
     "typeorm": "^0.2.24"
-  },
-  "ava": {
-    "timeout": "60s",
-    "files": [
-      "src/test/*.test.ts"
-    ],
-    "typescript": {
-      "rewritePaths": {
-        "src/": "dist/"
-      }
-    }
   }
 }

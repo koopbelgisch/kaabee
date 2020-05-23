@@ -1,6 +1,15 @@
-import test from "./helpers/test";
+import { launch, TestInstance } from "./helper";
 
-test("get homepage", async t => {
-  const resp = await t.context.app.get("/");
-  t.is(200, resp.status);
+let t: TestInstance;
+beforeAll(async () => {
+  t = await launch();
+});
+
+afterAll(async () => {
+  await t.server.close();
+});
+
+test("get homepage", async () => {
+  const resp = await t.app.get("/");
+  expect(resp.status).toBe(200);
 });
