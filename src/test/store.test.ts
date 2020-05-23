@@ -13,7 +13,7 @@ afterAll(async () => {
 test("create valid store", async () => {
   const store = await factory.store.create();
   expect(store.id).toBeDefined();
-})
+});
 
 test("get store index", async () => {
   const stores = await factory.store.createAmount(10);
