@@ -11,15 +11,17 @@ afterAll(async () => {
 
 test("get login page", async () => {
   const resp = await t.app.get("/login");
-  t.is(resp.status, 200);
+  expect(resp.status).toBe(200);
 });
 
-test("get login with google", async () => {
+test("login with google should redirect", async () => {
   const resp = await t.app.get("/auth/google/login");
-  t.is(resp.status, 302);
+  expect(resp.status).toBe(302);
+  expect(resp.headers["location"]).toContain("google.com");
 });
 
 test("get login with facebook", async () => {
   const resp = await t.app.get("/auth/facebook/login");
-  t.is(resp.status, 302);
+  expect(resp.status).toBe(302);
+  expect(resp.headers["location"]).toContain("facebook.com");
 });
