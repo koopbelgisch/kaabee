@@ -1,14 +1,6 @@
 import "reflect-metadata";
-import * as faker from "faker";
 import { createConnection } from "typeorm";
-import { Store } from "./models/store";
-import { Tag } from "./models/tag";
-
-function vatnumber(): string {
-  return faker.random.number(1999).toString().padStart(4, "0") + "."
-    + faker.random.number(999).toString().padStart(3, "0") + "."
-    + faker.random.number(999).toString().padStart(3, "0");
-}
+import { factory } from "./factory";
 
 
 async function seed(): Promise<void> {
@@ -16,32 +8,18 @@ async function seed(): Promise<void> {
 
   // Create some fake tags
   const tagNames = ["voeding", "doe-het-zelf", "apotheek"];
-  const tags =
-    await Promise.all(tagNames.map(async name => {
-      const tag = new Tag();
-      tag.name = name;
-      await tag.save();
-      return tag;
-    }));
-  // Create some fake stores
-  const stores =
-    await Promise.all(new Array(1000).fill(undefined).map(async () => {
-      const store = new Store();
-      store.name = faker.company.companyName();
-      store.description = faker.company.catchPhrase();
-      store.vatnumber = vatnumber();
-      store.postcode = faker.random.number(9999).toString();
-      store.email = faker.internet.email();
-      // Placeholder, faker.system.filePath() returns undefined
-      store.logopath = "/logos/test.png";
-      store.site = faker.internet.url();
-      store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
+  const tags = await factory.tag.createMany(tagNames.map(name => {return { name };}));
 
-      await store.save();
-      return store;
-    }));
+  // Create some fake stores
+  const stores = await factory.store.createAmount(1000, { possibleTags: tags });
+
+  const users = [
+    await factory.user.create({ admin: true }),
+    ... await factory.user.createAmount(50)
+  ];
   console.dir(stores);
   console.dir(tags);
+  console.dir(users);
 }
 
 seed();
