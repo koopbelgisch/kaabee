@@ -99,7 +99,7 @@ export default async function spawn(): Promise<Express> {
   app.get("/auth/email/wait", auth.emailWaiting);
   app.get("/auth/email/confirm", auth.emailConfirm);
 
-  if (env.isDev) {
+  if (env.isDev || env.isTest) {
     app.get("/auth/dev/login", auth.devLogin);
   }
 

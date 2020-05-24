@@ -149,12 +149,24 @@ export async function emailConfirm(req: Request, res: Response): Promise<void> {
 /**
  * GET /auth/dev/login
  *
- * Log in as the user with id 1. Should only be available in development mode.
+ * Log in without checking. Should only be available in development mode.
  */
 export async function devLogin(req: Request, res: Response): Promise<void> {
-  if (env.isDev && req.hostname === "localhost") {
-    let user = await User.findOne({ admin: true  }); // Find a random admin user
-    if (!user) {
+  if ((env.isDev || env.isTest) && req.hostname === "localhost") {
+    const id = req.query["id"];
+    let user: User | undefined;
+    if (id) { // look for user with desired id
+      user = await User.findOne({ id: +id });
+      if (!user) {
+        res.status(404);
+        res.send("User not found");
+        return;
+      }
+    }
+    if (!user) { // if not given, find random admin user
+      user = await User.findOne({ admin: true  });
+    }
+    if (!user) { // if no admin exists, create one
       user = new User();
       user.name = "admin";
       user.provider = "admin";
@@ -167,10 +179,11 @@ export async function devLogin(req: Request, res: Response): Promise<void> {
     req.login(user, () => {
       if (user) {
         req.flash("success", `Ingelogd als ${user.name}`);
+        res.redirect("/");
       } else {
-        req.flash("error", "Er liep iets mis bij het inlogen. Fix uw code.");
+        res.status(500);
+        res.send("Er liep iets mis bij het inlogen. Fix uw code.");
       }
-      return res.redirect("/");
     });
   } else {
     throw new Error("Somebody tried to access devLogin, help!");
