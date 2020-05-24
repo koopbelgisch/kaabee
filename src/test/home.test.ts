@@ -5,8 +5,10 @@ beforeAll(async () => {
   t = await TestInstance.launch();
 });
 
+beforeEach(async () => await t.resetClient());
+
 afterAll(() => {
-  t.close();
+  t.closeServer();
 });
 
 test("get homepage", async () => {

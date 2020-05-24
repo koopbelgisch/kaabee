@@ -6,8 +6,10 @@ beforeAll(async () => {
   t = await TestInstance.launch();
 });
 
+beforeEach(async () => await t.resetClient());
+
 afterAll(() => {
-  t.close();
+  t.closeServer();
 });
 
 test("get login page", async () => {
@@ -35,5 +37,15 @@ test("email check", async () => {
   const resp = await t.client.get("./auth/email/check");
   expect(resp.statusCode).toBe(200); // request to give email
   expect(resp.body).toContain("<form");
+});
+
+test("email submit", async () => {
+  // login without email
+  const user = await factory.user.create({ email: null });
+  await t.login(user);
+
+  const resp = await t.client.post("./auth/email/submit", { form: { email: "email@example.com" } });
+  expect(resp.statusCode).toBe(302);
+  expect(resp.headers["location"]).toBe("/auth/email/wait");
 });
 

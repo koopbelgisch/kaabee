@@ -6,8 +6,10 @@ beforeAll(async () => {
   t = await TestInstance.launch();
 });
 
+beforeEach(async () => await t.resetClient());
+
 afterAll(() => {
-  t.close();
+  t.closeServer();
 });
 
 test("create valid store", async () => {
