@@ -37,6 +37,14 @@ class Factory<T extends BaseEntity> {
   }
 }
 
+function definedOr<T>(item: T | undefined, generator: () => T): T {
+  if (item !== undefined) {
+    return item;
+  } else {
+    return generator();
+  }
+}
+
 export const factory = {
 
   tag: new Factory(opts  => {
@@ -53,25 +61,25 @@ export const factory = {
       tags = [opts.possibleTags[Math.floor(Math.random() * opts.possibleTags.length)]];
     }
     const store = new Store();
-    store.name = opts.name || faker.company.companyName();
-    store.description = opts.description || faker.company.catchPhrase();
-    store.vatnumber = opts.vatnumber || vatnumber();
-    store.postcode = opts.postcode || faker.random.number(9999).toString();
-    store.email = opts.email || faker.internet.email();
-    store.logopath = opts.logopath || "/logos/test.png";
-    store.site = opts.site || faker.internet.url();
+    store.name = definedOr(opts.name, faker.company.companyName);
+    store.description = definedOr(opts.description, faker.company.catchPhrase);
+    store.vatnumber = definedOr(opts.vatnumber, vatnumber);
+    store.postcode = definedOr(opts.postcode, () => faker.random.number(9999).toString());
+    store.email = definedOr(opts.email, faker.internet.email);
+    store.logopath = definedOr(opts.logopath, () => "/logos/test.png");
+    store.site = definedOr(opts.site, faker.internet.url);
     store.tags = Promise.resolve(tags);
     return store;
   }),
 
   user: new Factory(opts => {
     const user = new User();
-    user.name = opts.name || faker.internet.userName();
-    user.admin = opts.admin == null ? false : opts.admin;
-    user.email = faker.internet.email();
-    user.emailConfirmed = opts.emailConfirmed == null ? false : opts.emailConfirmed;
-    user.provider = opts.provider || (faker.random.boolean() ? "facebook" : "google");
-    user.providerId = opts.providerId || faker.random.uuid();
+    user.name = definedOr(opts.name, faker.internet.userName);
+    user.admin = definedOr(opts.admin, () => false);
+    user.email = definedOr(opts.email, faker.internet.email);
+    user.emailConfirmed = definedOr(opts.emailConfirmed, () => false);
+    user.provider = definedOr(opts.provider, () => faker.random.boolean() ? "facebook" : "google");
+    user.providerId = definedOr(opts.providerId, faker.random.uuid);
     return user;
   })
 };
