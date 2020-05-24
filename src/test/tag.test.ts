@@ -1,13 +1,13 @@
-import { launch, TestInstance } from "./helper";
+import { TestInstance } from "./helper";
 import { factory } from "../factory";
 
 let t: TestInstance;
 beforeAll(async () => {
-  t = await launch();
+  t = await TestInstance.launch();
 });
 
-afterAll(async () => {
-  await t.server.close();
+afterAll(() => {
+  t.close();
 });
 
 test("create valid tags", async () => {
@@ -17,21 +17,21 @@ test("create valid tags", async () => {
 
 test("get tag index", async () => {
   const tags = await factory.tag.createAmount(10);
-  const resp = await t.app.get("/tags");
-  expect(resp.status).toBe(200);
+  const resp = await t.client.get("./tags");
+  expect(resp.statusCode).toBe(200);
   for (const tag of tags) {
-    expect(resp.data).toContain(tag.name);
+    expect(resp.body).toContain(tag.name);
   }
 });
 
 test("get tag show", async () => {
   const tag = await factory.tag.create();
-  const resp = await t.app.get(`/tags/${ tag.id }`);
-  expect(resp.status).toBe(200);
-  expect(resp.data).toContain(tag.name);
+  const resp = await t.client.get(`./tags/${ tag.id }`);
+  expect(resp.statusCode).toBe(200);
+  expect(resp.body).toContain(tag.name);
 });
 
 test("should get 404", async () => {
-  const resp = await t.app.get("/tag/9999999");
-  expect(resp.status).toBe(404);
+  const resp = await t.client.get("./tag/9999999");
+  expect(resp.statusCode).toBe(404);
 });

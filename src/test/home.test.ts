@@ -1,15 +1,15 @@
-import { launch, TestInstance } from "./helper";
+import { TestInstance } from "./helper";
 
 let t: TestInstance;
 beforeAll(async () => {
-  t = await launch();
+  t = await TestInstance.launch();
 });
 
-afterAll(async () => {
-  await t.server.close();
+afterAll(() => {
+  t.close();
 });
 
 test("get homepage", async () => {
-  const resp = await t.app.get("/");
-  expect(resp.status).toBe(200);
+  const resp = await t.client.get("./");
+  expect(resp.statusCode).toBe(200);
 });
