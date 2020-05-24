@@ -76,7 +76,7 @@ export class User extends KaabeeEntity {
 
   public async setEmail(email: string): Promise<Array<ValidationError>> {
     this.email = email;
-    this.emailToken = await randomURLSafe(256),
+    this.emailToken = await randomURLSafe(64);
     this.emailTokenExpiry = Date.now() + (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
     const errors = await this.validate();
     if (errors.length === 0) {

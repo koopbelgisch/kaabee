@@ -97,7 +97,7 @@ export async function emailCheck(req: Request, res: Response): Promise<void> {
 /**
  * POST /auth/email/submit
  *
- * A user submits their email for cofirmation
+ * A user submits their email for confirmation
  */
 export async function emailSubmit(req: Request, res: Response): Promise<void> {
   const user = req.user as User | undefined;
