@@ -15,11 +15,17 @@ async function seed(): Promise<void> {
   await createConnection();
 
   // Create some fake tags
-  const tagNames = ["voeding", "doe-het-zelf", "apotheek"];
+  const tagNames = [
+    {"name": "Voeding", "isCategory": true},
+    {"name": "Doe-het-zelf", "isCategory": true},
+    {"name": "Apotheek", "isCategory": true},
+    {"name": "Puur Belgisch", "isCategory": false},
+    {"name": "Levert aan huis", "isCategory": false}];
   const tags =
-    await Promise.all(tagNames.map(async name => {
+    await Promise.all(tagNames.map(async values => {
       const tag = new Tag();
-      tag.name = name;
+      tag.name = values.name;
+      tag.isCategory = values.isCategory;
       await tag.save();
       return tag;
     }));
@@ -40,8 +46,6 @@ async function seed(): Promise<void> {
       await store.save();
       return store;
     }));
-  console.dir(stores);
-  console.dir(tags);
 }
 
 seed();
