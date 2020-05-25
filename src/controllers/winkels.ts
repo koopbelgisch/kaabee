@@ -36,7 +36,9 @@ export async function getStores(req: Request, res: Response): Promise<void> {
         // Multiple tags were given
         query = query.where(new Brackets(qb => {
           req.query.tag.forEach((t: string, i: number) => {
-            qb = qb.orWhere(`tag.id = :tag${i}`, {[`tag${i}`]: t});
+            let res = qb;
+            res = res.orWhere(`tag.id = :tag${i}`, { [`tag${i}`]: t });
+            return res;
           });
           return qb;
         }));
