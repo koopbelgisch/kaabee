@@ -31,8 +31,20 @@ export async function getStores(req: Request, res: Response): Promise<void> {
     }
 
     if (req.query.tag) {
-      query = query.leftJoinAndSelect("store.tags", "tag")
-        .andWhere("tag.id = :tag", { tag: req.query.tag });
+      query = query.leftJoinAndSelect("store.tags", "tag");
+      if (Array.isArray(req.query.tag)) {
+        // Multiple tags were given
+        query = query.where(new Brackets(qb => {
+          req.query.tag.forEach((t: string, i: number) => {
+            qb = qb.orWhere(`tag.id = :tag${i}`, {[`tag${i}`]: t});
+          });
+          return qb;
+        }));
+        query = query.groupBy("store.id").having(`count(*) = ${req.query.tag.length}`);
+      } else {
+        // Single tag was given
+        query = query.andWhere("tag.id = :tag", { tag: req.query.tag });
+      }
       formData.tag = req.query.tag;
     }
   }
