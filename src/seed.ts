@@ -16,11 +16,11 @@ async function seed(): Promise<void> {
 
   // Create some fake tags
   const tagNames = [
-    {"name": "Voeding", "isCategory": true},
-    {"name": "Doe-het-zelf", "isCategory": true},
-    {"name": "Apotheek", "isCategory": true},
-    {"name": "Puur Belgisch", "isCategory": false},
-    {"name": "Levert aan huis", "isCategory": false}];
+    { "name": "Voeding", "isCategory": true },
+    { "name": "Doe-het-zelf", "isCategory": true },
+    { "name": "Apotheek", "isCategory": true },
+    { "name": "Puur Belgisch", "isCategory": false },
+    { "name": "Levert aan huis", "isCategory": false }];
   const tags =
     await Promise.all(tagNames.map(async values => {
       const tag = new Tag();
@@ -30,22 +30,21 @@ async function seed(): Promise<void> {
       return tag;
     }));
   // Create some fake stores
-  const stores =
-    await Promise.all(new Array(1000).fill(undefined).map(async () => {
-      const store = new Store();
-      store.name = faker.company.companyName();
-      store.description = faker.company.catchPhrase();
-      store.vatnumber = vatnumber();
-      store.postcode = faker.random.number(9999).toString();
-      store.email = faker.internet.email();
-      // Placeholder, faker.system.filePath() returns undefined
-      store.logopath = store.name;
-      store.site = faker.internet.url();
-      store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
+  await Promise.all(new Array(1000).fill(undefined).map(async () => {
+    const store = new Store();
+    store.name = faker.company.companyName();
+    store.description = faker.company.catchPhrase();
+    store.vatnumber = vatnumber();
+    store.postcode = faker.random.number(9999).toString();
+    store.email = faker.internet.email();
+    // Placeholder, faker.system.filePath() returns undefined
+    store.logopath = store.name;
+    store.site = faker.internet.url();
+    store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
 
-      await store.save();
-      return store;
-    }));
+    await store.save();
+    return store;
+  }));
 }
 
 seed();

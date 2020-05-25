@@ -30,7 +30,17 @@ block content
                   select#tag(name="tag")
                     option(value="", selected=!formData.tag) Alle tags
                     each val, index in tags
-                      option(value=val.id, selected=(formData.tag === val.id.toString())) #{val.name}
+                      if val.isCategory
+                        option(value=val.id, selected=(formData.tag === val.id.toString())) #{val.name}
+        each val, index in tags
+          if !val.isCategory
+            .field.is-horizontal
+              .field-label
+                label.label #{val.name}
+              .field-body
+                .field
+                  label.checkbox
+                    input(name="tag", type="checkbox", checked=(formData.tag === val.id.toString()), value=val.id)
         .field.is-horizontal
           .field-label
           .field-body
