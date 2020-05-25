@@ -40,7 +40,8 @@ async function seed(): Promise<void> {
     // Placeholder, faker.system.filePath() returns undefined
     store.logopath = store.name;
     store.site = faker.internet.url();
-    store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
+    store.tags = Promise.resolve(tags.sort(() => .5 - Math.random()).slice(0, 2));
+    //store.tags = Promise.resolve([tags[Math.floor(Math.random() * tags.length)]]);
 
     await store.save();
     return store;
