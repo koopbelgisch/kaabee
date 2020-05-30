@@ -42,7 +42,7 @@ export async function getStores(req: Request, res: Response): Promise<void> {
           });
           return qb;
         }));
-        query = query.groupBy("store.id").having(`count(*) = ${req.query.tag.length}`);
+        query = query.groupBy("store.id").having("count(*) = :length", { length: req.query.tag.length });
       } else {
         // Single tag was given
         query = query.andWhere("tag.id = :tag", { tag: req.query.tag });
