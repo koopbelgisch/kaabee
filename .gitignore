@@ -4,3 +4,4 @@ node_modules/
 .nyc_output/
 .idea/*
 package-lock.json
+tsconfig.tsbuildinfo
