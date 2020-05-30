@@ -1,6 +1,7 @@
+///<reference types="../typings/nodemailer-stub" />
+import { interactsWithMail as iwm } from "nodemailer-stub";
 import { TestInstance } from "./helper";
 import { factory } from "../factory";
-import { interactsWithMail as iwm } from "nodemailer-stub";
 import faker from "faker";
 
 let t: TestInstance;
@@ -124,5 +125,3 @@ test("email confirmation  wrong link", async () => {
   expect(user.emailConfirmed).toBe(false);
   expect(user.emailToken).toBeDefined();
 });
-
-

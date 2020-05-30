@@ -1,6 +1,7 @@
+///<reference types="../typings/nodemailer-stub" />
 import config from "config";
 import { compileFile } from "pug";
-///<reference types="../typings/nodemailer-stub" />
+import open from "open";
 import { stubTransport } from "nodemailer-stub";
 import {
   Transporter,
@@ -51,7 +52,7 @@ async function getMailer(): Promise<Transporter> {
 }
 
 export async function mail(
-  options: {
+  message: {
     from?: string;
     to: string;
     subject: string;
@@ -59,10 +60,12 @@ export async function mail(
   }
 ): Promise<void> {
   const mailer = await getMailer();
-  const info = await mailer.sendMail(options);
+  const info = await mailer.sendMail(message);
   console.log("Message sent: %s", info.messageId);
   if (testAccount) {
-    console.log("Preview URL: %s", getTestMessageUrl(info));
+    const url = getTestMessageUrl(info);
+    if(url) await open(url);
+    console.log("Preview URL: %s", url);
   }
 }
 
