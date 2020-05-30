@@ -61,7 +61,6 @@ export async function mail(
 ): Promise<void> {
   const mailer = await getMailer();
   const info = await mailer.sendMail(message);
-  console.log("Message sent: %s", info.messageId);
   if (testAccount) {
     const url = getTestMessageUrl(info);
     if(url) await open(url);
