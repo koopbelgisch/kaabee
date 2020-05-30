@@ -39,8 +39,8 @@ export class User extends KaabeeEntity {
   public emailConfirmed!: boolean;
 
   @Index()
-  @Column({ nullable: true })
-  public emailToken?: string;
+  @Column({ type: "varchar", nullable: true })
+  public emailToken?: string | null;
 
   @Column({ default: 0 })
   public emailTokenExpiry!: number;
@@ -77,10 +77,11 @@ export class User extends KaabeeEntity {
   public async setEmail(email: string): Promise<Array<ValidationError>> {
     this.email = email;
     this.emailToken = await randomURLSafe(64);
-    this.emailTokenExpiry = Date.now() + (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
+    const validityMs = (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
+    this.emailTokenExpiry = Date.now() + validityMs;
     const errors = await this.validate();
     if (errors.length === 0) {
-      this.save();
+      await this.save();
     }
     return errors;
   }
@@ -90,11 +91,11 @@ export class User extends KaabeeEntity {
       return null;
     }
     const user = await User.findOne({ emailToken: token });
-    if (!user || user.emailTokenExpiry > Date.now()) {
+    if (!user || user.emailTokenExpiry < Date.now()) {
       return null;
     } else {
       user.emailConfirmed = true;
-      user.emailToken = undefined;
+      user.emailToken = null;
       user.emailTokenExpiry = 0;
       return user.save();
     }

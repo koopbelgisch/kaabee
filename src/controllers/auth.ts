@@ -108,7 +108,7 @@ export async function emailSubmit(req: Request, res: Response): Promise<void> {
     if (errors.length > 0) {
       res.render("auth/emailRequest", { errors: errors });
     } else {
-      await sendEmailConfirmation(user);
+      await sendEmailConfirmation(user, req.baseUrl);
       res.redirect("/auth/email/wait");
     }
   }
@@ -137,7 +137,7 @@ export async function emailWaiting(req: Request, res: Response): Promise<void> {
  */
 export async function emailConfirm(req: Request, res: Response): Promise<void> {
   const user = await User.confirmEmail(req.params.token);
-  if(user) {
+  if(user && user.emailConfirmed) {
     req.flash("success", `Je e-mail '${user.email}' is bevestigd.`);
     res.redirect("/");
   } else {

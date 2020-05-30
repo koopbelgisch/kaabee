@@ -1,6 +1,15 @@
 import config from "config";
 import { compileFile } from "pug";
-import { Transporter, TestAccount, createTestAccount, createTransport, getTestMessageUrl } from "nodemailer";
+///<reference types="../typings/nodemailer-stub" />
+import { stubTransport } from "nodemailer-stub";
+import {
+  Transporter,
+  TestAccount,
+  createTestAccount,
+  createTransport,
+  getTestMessageUrl,
+  TransportOptions
+} from "nodemailer";
 
 import { User } from "../models/user";
 import env from "./env";
@@ -10,11 +19,24 @@ let testAccount: TestAccount | null;
 
 async function getMailer(): Promise<Transporter> {
   if (mailer === null) {
-    let options;
-    if (!config.has("smtp.user")) {
-      if(env.isProd) throw new Error("smpt credentials not available");
+    const defaults = { from: config.get("smtp.from") as string };
+
+    if(env.isProd){
+      mailer = createTransport({
+        host: config.get("smtp.host"),
+        port: config.get("smtp.port"),
+        auth: {
+          user: config.get("smtp.user"),
+          pass: config.get("smtp.pass"),
+        }
+      } as TransportOptions,defaults);
+
+    } else if (env.isTest) {
+      mailer = createTransport(stubTransport, defaults);
+
+    } else {
       testAccount = await createTestAccount();
-      options = {
+      mailer = createTransport({
         host: "smtp.ethereal.email",
         port: 587,
         secure: false,
@@ -22,18 +44,8 @@ async function getMailer(): Promise<Transporter> {
           user: testAccount.user,
           pass: testAccount.pass,
         }
-      };
-    } else {
-      options = {
-        host: config.get("smtp.host") as string,
-        port: config.get("smtp.port") as number,
-        auth: {
-          user: config.get("smtp.user") as string,
-          pass: config.get("smtp.pass") as string,
-        }
-      };
+      }, defaults);
     }
-    mailer = createTransport(options, { from: config.get("smtp.from") });
   }
   return mailer;
 }
@@ -55,10 +67,10 @@ export async function mail(
 }
 
 const confirmationTemplate = compileFile(__dirname + "/../../views/mail/emailConfirmation.pug");
-export async function sendEmailConfirmation(user: User): Promise<void> {
+export async function sendEmailConfirmation(user: User, baseUrl: string): Promise<void> {
   const html = confirmationTemplate({
     user: user,
-    url: `${config.get("app.defaultURL")}/auth/email/confirm/${user.emailToken}`
+    url: `${ baseUrl }/auth/email/confirm/${user.emailToken}`
   });
   return mail({ to: user.email, subject: "[Kaabee] Bevestig je email", html });
 }

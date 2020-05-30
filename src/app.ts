@@ -54,6 +54,8 @@ export default async function spawn(): Promise<Express> {
 
   // Make useful variables available in the views
   app.use((req, res, next) => {
+    const port = req.socket.localPort;
+    req.baseUrl = `${ req.protocol }://${ req.hostname }${ port === 443 ? "" : ":" + port }`;
     res.locals.currentUser = req.user;
     res.locals.flash = req.flash();
     res.locals.env = env;
@@ -97,7 +99,7 @@ export default async function spawn(): Promise<Express> {
   app.get("/auth/email/check", auth.emailCheck);
   app.post("/auth/email/submit", auth.emailSubmit);
   app.get("/auth/email/wait", auth.emailWaiting);
-  app.get("/auth/email/confirm", auth.emailConfirm);
+  app.get("/auth/email/confirm/:token", auth.emailConfirm);
 
   if (env.isDev || env.isTest) {
     app.get("/auth/dev/login", auth.devLogin);
