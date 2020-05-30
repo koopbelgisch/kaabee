@@ -14,6 +14,7 @@ import {
 
 import { User } from "../models/user";
 import env from "./env";
+import assert from "assert";
 
 let mailer: Transporter | null = null;
 let testAccount: TestAccount | null;
@@ -70,10 +71,11 @@ export async function mail(
 
 const confirmationTemplate = compileFile(__dirname + "/../../views/mail/emailConfirmation.pug");
 export async function sendEmailConfirmation(user: User, baseUrl: string): Promise<void> {
+  assert(user.emailToConfirm != null);
   const html = confirmationTemplate({
     user: user,
     url: `${ baseUrl }/auth/email/confirm/${user.emailToken}`
   });
-  return mail({ to: user.email, subject: "[Kaabee] Bevestig je email", html });
+  return mail({ to: user.emailToConfirm, subject: "[Kaabee] Bevestig je email", html });
 }
 

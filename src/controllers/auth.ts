@@ -81,6 +81,9 @@ export async function logout(req: Request, res: Response): Promise<void> {
  * GET /auth/email/check
  *
  * Check if a user has a registered email and handle approriately.
+ * - If they are not logged in, redirect to /login
+ * - If they have a confirmed email, redirect to /
+ * - If they don't have a confirmed email, ask to request.
  */
 export async function emailCheck(req: Request, res: Response): Promise<void> {
   const user = req.user as User | undefined;
@@ -104,7 +107,7 @@ export async function emailSubmit(req: Request, res: Response): Promise<void> {
   if (!user) {
     res.redirect("/login");
   } else {
-    const errors = await user.setEmail(req.body?.email);
+    const errors = await user.requestEmailChange(req.body?.email);
     if (errors.length > 0) {
       res.render("auth/emailRequest", { errors: errors });
     } else {

@@ -77,7 +77,7 @@ export const factory = {
     user.name = definedOr(opts.name, faker.internet.userName);
     user.admin = definedOr(opts.admin, () => false);
     user.email = definedOr(opts.email, faker.internet.email);
-    user.emailConfirmed = definedOr(opts.emailConfirmed, () => false);
+    user.emailConfirmed = definedOr(opts.emailConfirmed, () => opts.email !== null);
     user.provider = definedOr(opts.provider, () => faker.random.boolean() ? "facebook" : "google");
     user.providerId = definedOr(opts.providerId, faker.random.uuid);
     return user;

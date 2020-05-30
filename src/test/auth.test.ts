@@ -11,6 +11,8 @@ beforeAll(async () => {
 
 beforeEach(async () => await t.resetClient());
 
+afterEach(() => iwm.flushMails());
+
 afterAll(() => {
   t.closeServer();
 });
@@ -32,14 +34,39 @@ test("get login with facebook", async () => {
   expect(resp.headers["location"]).toContain("facebook.com");
 });
 
-test("email check", async () => {
-  // login without email
+test("email check without login", async () => {
+  const resp = await t.client.get("./auth/email/check");
+  expect(resp.statusCode).toBe(302); // request to give email
+  expect(resp.headers["location"]).toBe("/login");
+});
+
+
+test("email check without email", async () => {
   const user = await factory.user.create({ email: null });
   await t.login(user);
 
   const resp = await t.client.get("./auth/email/check");
   expect(resp.statusCode).toBe(200); // request to give email
   expect(resp.body).toContain("<form");
+});
+
+test("email check with unconfirmed email", async () => {
+  const user = await factory.user.create({ emailConfirmed: false });
+  await t.login(user);
+
+  const resp = await t.client.get("./auth/email/check");
+  expect(resp.statusCode).toBe(200); // request to give email
+  expect(resp.body).toContain("<form");
+  expect(resp.body).toContain(user.email);
+});
+
+test("email check with confirmed email", async () => {
+  const user = await factory.user.create();
+  await t.login(user);
+
+  const resp = await t.client.get("./auth/email/check");
+  expect(resp.statusCode).toBe(302); // request to give email
+  expect(resp.headers["location"]).toBe("/");
 });
 
 test("email confirmation happy flow", async () => {
@@ -53,9 +80,10 @@ test("email confirmation happy flow", async () => {
   expect(resp.statusCode).toBe(302);
   expect(resp.headers["location"]).toBe("/auth/email/wait");
 
-  // email should be set
+  // emailToConfirm should be set
   await user.reload();
-  expect(user.email).toBe(email);
+  expect(user.email).toBe(null);
+  expect(user.emailToConfirm).toBe(email);
   expect(user.emailConfirmed).toBe(false);
   expect(user.emailToken).toBeDefined();
 
@@ -82,6 +110,7 @@ test("email confirmation happy flow", async () => {
   expect(user.email).toBe(email);
   expect(user.emailConfirmed).toBe(true);
   expect(user.emailToken).toBe(null);
+  expect(user.emailToConfirm).toBe(null);
 });
 
 test("email confirmation link expired", async () => {
@@ -124,4 +153,54 @@ test("email confirmation  wrong link", async () => {
   await user.reload();
   expect(user.emailConfirmed).toBe(false);
   expect(user.emailToken).toBeDefined();
+});
+
+test("email change happy flow", async () => {
+  // login with an existing email
+  const user = await factory.user.create();
+  const oldEmail = user.email;
+  const email = faker.internet.email();
+  await t.login(user);
+
+  // check if email is confirmed
+  const check = await t.client.get("./auth/email/check");
+  expect(check.statusCode).toBe(302);
+  expect(check.headers["location"]).toBe("/");
+
+  // submit email form confirmation
+  const resp = await t.client.post("./auth/email/submit", { form: { email } });
+  expect(resp.statusCode).toBe(302);
+  expect(resp.headers["location"]).toBe("/auth/email/wait");
+
+  // emailToConfirm should be set
+  await user.reload();
+  expect(user.email).toBe(oldEmail);
+  expect(user.emailToConfirm).toBe(email);
+  expect(user.emailConfirmed).toBe(true);
+  expect(user.emailToken).toBeDefined();
+
+  // check the incoming email
+  expect(iwm.sentMailsCount()).toBe(1);
+  const mail = iwm.lastMail();
+  expect(mail.from).toBe("info@kaabee.be");
+  expect(mail.to).toStrictEqual([email]);
+  expect(mail.content).toContain("Bevestig je email bij Kaabee");
+  const content = mail.content;
+  const urls = /<a href="([^"]+)"/.exec(content) as RegExpExecArray;
+  expect(urls.length).toBe(2);
+
+  const confirmationUrl = urls[1];
+  expect(confirmationUrl).toContain("/auth/email/confirm/");
+  expect(confirmationUrl).toContain(user.emailToken);
+
+  // GET confirmation url
+  const confirmResp = await t.client.get(confirmationUrl, { prefixUrl: "" });
+  expect(confirmResp.statusCode).toBe(302);
+
+  // email should be set
+  await user.reload();
+  expect(user.email).toBe(email);
+  expect(user.emailConfirmed).toBe(true);
+  expect(user.emailToken).toBe(null);
+  expect(user.emailToConfirm).toBe(null);
 });
