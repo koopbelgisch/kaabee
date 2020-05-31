@@ -13,6 +13,42 @@ afterAll(() => {
   t.closeServer();
 });
 
+test("redirected unauthorized users to login", async () => {
+  const respIndex = await t.client.get("./users/");
+  expect(respIndex).toRedirectTo("/login");
+
+  const user = await factory.user.create();
+  const respShow = await t.client.get(`./users/${ user.id }`);
+  expect(respShow).toRedirectTo("/login");
+
+  const oldName = user.name;
+  const newName = faker.internet.userName();
+
+  const respUpdate = await t.client.post(`./users/${ user.id }`, { form: { name: newName, email: user.email } });
+  expect(respUpdate).toRedirectTo("/login");
+
+  expect(user.name).toBe(oldName);
+});
+
+test("respond to non-admin users with 404", async () => {
+  await t.login(await factory.user.create());
+
+  const respIndex = await t.client.get("./users/");
+  expect(respIndex.statusCode).toBe(404);
+
+  const user = await factory.user.create();
+  const respShow = await t.client.get(`./users/${ user.id }`);
+  expect(respShow.statusCode).toBe(404);
+
+  const oldName = user.name;
+  const newName = faker.internet.userName();
+
+  const respUpdate = await t.client.post(`./users/${ user.id }`, { form: { name: newName, email: user.email } });
+  expect(respUpdate.statusCode).toBe(404);
+  await user.reload();
+  expect(user.name).toBe(oldName);
+});
+
 test("user index", async () => {
   const admin = await factory.user.create({ admin: true });
   const users = await factory.user.createAmount(5);

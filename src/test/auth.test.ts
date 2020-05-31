@@ -36,8 +36,7 @@ test("get login with facebook", async () => {
 
 test("email check without login", async () => {
   const resp = await t.client.get("./auth/email/check");
-  expect(resp.statusCode).toBe(302); // request to give email
-  expect(resp.headers["location"]).toBe("/login");
+  expect(resp).toRedirectTo("/login");
 });
 
 
@@ -65,8 +64,7 @@ test("email check with confirmed email", async () => {
   await t.login(user);
 
   const resp = await t.client.get("./auth/email/check");
-  expect(resp.statusCode).toBe(302); // request to give email
-  expect(resp.headers["location"]).toBe("/");
+  expect(resp).toRedirectTo("/");
 });
 
 test("email confirmation happy flow", async () => {
@@ -77,8 +75,7 @@ test("email confirmation happy flow", async () => {
 
   // submit email form confirmation
   const resp = await t.client.post("./auth/email/submit", { form: { email } });
-  expect(resp.statusCode).toBe(302);
-  expect(resp.headers["location"]).toBe("/auth/email/wait");
+  expect(resp).toRedirectTo("/auth/email/wait");
 
   // emailToConfirm should be set
   await user.reload();
@@ -103,7 +100,7 @@ test("email confirmation happy flow", async () => {
 
   // GET confirmation url
   const confirmResp = await t.client.get(confirmationUrl, { prefixUrl: "" });
-  expect(confirmResp.statusCode).toBe(302);
+  expect(confirmResp).toRedirectTo("/");
 
   // email should be set
   await user.reload();
@@ -121,8 +118,7 @@ test("email confirmation link expired", async () => {
 
   // submit email form confirmation
   const resp = await t.client.post("./auth/email/submit", { form: { email } });
-  expect(resp.statusCode).toBe(302);
-  expect(resp.headers["location"]).toBe("/auth/email/wait");
+  expect(resp).toRedirectTo("/auth/email/wait");
 
   // expire token
   await user.reload();
@@ -130,7 +126,7 @@ test("email confirmation link expired", async () => {
   await user.save();
 
   const confirmResp = await t.client.get(`./auth/email/confirm/${ user.emailToken }`);
-  expect(confirmResp.statusCode).toBe(302);
+  expect(confirmResp).toRedirectTo("/");
 
   await user.reload();
   expect(user.emailConfirmed).toBe(false);
@@ -144,11 +140,10 @@ test("email confirmation  wrong link", async () => {
 
   // submit email form confirmation
   const resp = await t.client.post("./auth/email/submit", { form: { email } });
-  expect(resp.statusCode).toBe(302);
-  expect(resp.headers["location"]).toBe("/auth/email/wait");
+  expect(resp).toRedirectTo("/auth/email/wait");
 
   const confirmResp = await t.client.get("./auth/email/confirm/aaaaaaaaaaaaaa");
-  expect(confirmResp.statusCode).toBe(302);
+  expect(confirmResp).toRedirectTo("/");
 
   await user.reload();
   expect(user.emailConfirmed).toBe(false);
@@ -164,13 +159,11 @@ test("email change happy flow", async () => {
 
   // check if email is confirmed
   const check = await t.client.get("./auth/email/check");
-  expect(check.statusCode).toBe(302);
-  expect(check.headers["location"]).toBe("/");
+  expect(check).toRedirectTo("/");
 
   // submit email form confirmation
   const resp = await t.client.post("./auth/email/submit", { form: { email } });
-  expect(resp.statusCode).toBe(302);
-  expect(resp.headers["location"]).toBe("/auth/email/wait");
+  expect(resp).toRedirectTo("/auth/email/wait");
 
   // emailToConfirm should be set
   await user.reload();
@@ -195,7 +188,7 @@ test("email change happy flow", async () => {
 
   // GET confirmation url
   const confirmResp = await t.client.get(confirmationUrl, { prefixUrl: "" });
-  expect(confirmResp.statusCode).toBe(302);
+  expect(confirmResp).toRedirectTo("/");
 
   // email should be set
   await user.reload();

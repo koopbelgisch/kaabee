@@ -1,5 +1,5 @@
 import { CookieJar } from "tough-cookie";
-import got, { Got } from "got";
+import got, { Got, Response } from "got";
 import { Express } from "express";
 import http from "http";
 import listen from "test-listen";
@@ -47,8 +47,7 @@ export class TestInstance {
    */
   public async login(user: User): Promise<void> {
     const resp = await this.client.get(`./auth/dev/login?id=${ user.id }`);
-    expect(resp.statusCode).toBe(302);
-    expect(resp.headers["location"]).toBe("/");
+    expect(resp).toRedirectTo("/");
   }
 
   /**
@@ -58,5 +57,29 @@ export class TestInstance {
     this.server.close();
   }
 }
+
+expect.extend({
+  toRedirectTo(received: Response, expectedRedirectLocation: string, expectedStatusCode = 302) {
+    if(received.statusCode == expectedStatusCode) {
+      const location = received.headers["location"];
+      if (location === expectedRedirectLocation) {
+        return {
+          message: () => `expected redirect location "${location}" not to be "${expectedRedirectLocation}`,
+          pass: true
+        };
+      } else {
+        return {
+          message: () => `expected redirect location "${location}" to be "${expectedRedirectLocation}`,
+          pass: false
+        };
+      }
+    } else {
+      return {
+        message: () => `expected statuCode ${ received.statusCode } to be ${ expectedStatusCode }`,
+        pass: false
+      };
+    }
+  }
+});
 
 
