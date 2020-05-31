@@ -27,3 +27,24 @@ export async function show(req: Request, res: Response): Promise<void> {
     res.send("Not found");
   }
 }
+
+/**
+ * POST /users/:userId/
+ * Update a user.
+ */
+export async function update(req: Request, res: Response): Promise<void> {
+  const user = await User.findOne(req.params["userId"]);
+  if (user !== undefined) {
+    user.email = req.body.email;
+    user.name = req.body.name;
+    user.admin = req.body.admin == "on";
+    const { updated, errors } = await user.saveIfValid();
+    res.render("user/show", {
+      user: updated || user,
+      errors
+    });
+  } else {
+    res.status(404);
+    res.send("Not found");
+  }
+}

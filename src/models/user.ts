@@ -81,16 +81,12 @@ export class User extends KaabeeEntity {
     return this.email !== undefined && this.emailConfirmed;
   }
 
-  public async requestEmailChange(email: string): Promise<Array<ValidationError>> {
+  public async requestEmailChange(email: string): Promise<{updated?: ThisType<User>; errors: Array<ValidationError>}> {
     this.emailToConfirm = email;
     this.emailToken = await randomURLSafe(64);
     const validityMs = (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
     this.emailTokenExpiry = Date.now() + validityMs;
-    const errors = await this.validate();
-    if (errors.length === 0) {
-      await this.save();
-    }
-    return errors;
+    return this.saveIfValid();
   }
 
   public static async confirmEmail(token?: string): Promise<User | null> {

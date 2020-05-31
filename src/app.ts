@@ -121,6 +121,7 @@ export default async function spawn(): Promise<Express> {
   // Users
   app.get("/users", users.index);
   app.get("/users/:userId", users.show);
+  app.post("/users/:userId", users.update);
 
   return app;
 }

@@ -107,9 +107,9 @@ export async function emailSubmit(req: Request, res: Response): Promise<void> {
   if (!user) {
     res.redirect("/login");
   } else {
-    const errors = await user.requestEmailChange(req.body?.email);
+    const { errors } = await user.requestEmailChange(req.body?.email);
     if (errors.length > 0) {
-      res.render("auth/emailRequest", { errors: errors });
+      res.render("auth/emailRequest", { errors });
     } else {
       await sendEmailConfirmation(user, req.baseUrl);
       res.redirect("/auth/email/wait");
