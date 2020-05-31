@@ -6,9 +6,8 @@ import { User } from "../models/user";
  * A list of all users.
  */
 export async function index(req: Request, res: Response): Promise<void> {
-  res.render("users/index", {
+  res.render("user/index", {
     title: "KaaBee",
-    userCount: await User.count(),
     users: await User.find(),
   });
 }
@@ -20,7 +19,7 @@ export async function index(req: Request, res: Response): Promise<void> {
 export async function show(req: Request, res: Response): Promise<void> {
   const user = await User.findOne(req.params["userId"]);
   if (user !== undefined) {
-    res.render("users/show", {
+    res.render("user/show", {
       user: user
     });
   } else {

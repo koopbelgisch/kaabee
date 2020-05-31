@@ -19,6 +19,7 @@
     "scss": "node-sass scss/index.scss public/css/style.css"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@types/config": "^0.0.36",
     "@types/connect-flash": "^0.0.35",
     "@types/cookie-session": "^2.0.39",

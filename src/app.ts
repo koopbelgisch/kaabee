@@ -13,6 +13,7 @@ import * as home from "./controllers/home";
 import * as winkels from "./controllers/winkels";
 import * as tags from "./controllers/tags";
 import * as auth from "./controllers/auth";
+import * as users from "./controllers/users";
 
 export default async function spawn(): Promise<Express> {
 
@@ -116,6 +117,10 @@ export default async function spawn(): Promise<Express> {
   // Tags
   app.get("/tags", tags.getTags);
   app.get("/tags/:tagId", tags.getTag);
+
+  // Users
+  app.get("/users", users.index);
+  app.get("/users/:userId", users.show);
 
   return app;
 }
