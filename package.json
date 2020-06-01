@@ -37,7 +37,7 @@
     "ava": "^3.8.2",
     "eslint": "^6.8.0",
     "faker": "^4.1.0",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.4",
     "nyc": "^15.0.1",
     "pug-lint": "^2.6.0",
     "pug-lint-config-clock": "^2.0.0",
