@@ -43,7 +43,7 @@
     "pug-lint-config-clock": "^2.0.0",
     "supertest": "^4.0.2",
     "ts-node": "^8.10.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   },
   "dependencies": {
     "@types/config": "^0.0.36",
