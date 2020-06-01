@@ -61,6 +61,6 @@
     "pug": "^2.0.4",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.2.0",
-    "typeorm": "^0.2.24"
+    "typeorm": "^0.2.25"
   }
 }
