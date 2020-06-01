@@ -413,10 +413,10 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-"@types/passport-facebook@^2.1.9":
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/@types/passport-facebook/-/passport-facebook-2.1.9.tgz#0181b40be4e002705f7a29d64da9029c2ab464dc"
-  integrity sha512-7Y5aHo35Io9fRvStBgXasf+6rRJ5SMiu1D3+cnUuxM1GS+QlgFnH+YTZjye0XgF4EWzxlXKTeLlK2DFU8+0Jpw==
+"@types/passport-facebook@^2.1.10":
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/@types/passport-facebook/-/passport-facebook-2.1.10.tgz#bec1d97dfd0ec0f78e5e59b6d7eda618a16ce6e3"
+  integrity sha512-qIgUGdf8ZN0ljRuFtOCLaN4r5WFo1Adk+hAbflOEKRJra+odp2zKGZYClPdJOR9daKydY1nVEaTk2ojyob//VA==
   dependencies:
     "@types/express" "*"
     "@types/passport" "*"
