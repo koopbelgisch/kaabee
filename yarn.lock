@@ -644,10 +644,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cookie-session@^2.0.39":
-  version "2.0.39"
-  resolved "https://registry.yarnpkg.com/@types/cookie-session/-/cookie-session-2.0.39.tgz#c033f5fcead0b3a811a08f18e4a62fcb040fea97"
-  integrity sha512-Y35+TImpAvTAGswU89WuoWIioHUnbEgwFsR09ZC8n9qugEL18UVyIgQ0GvokspUnsWDoNtzQXD6hhDOGau38Rw==
+"@types/cookie-session@^2.0.40":
+  version "2.0.40"
+  resolved "https://registry.yarnpkg.com/@types/cookie-session/-/cookie-session-2.0.40.tgz#74b859066224e9feea772f38d070290873999a7d"
+  integrity sha512-oM0bN729kwy6TEUp0s1m3kME4NUaQTR4xuixRNvUhrgvDDHqsn4+RoTsSEE2m1f2m4nqoxqfAbV5L617wIQthA==
   dependencies:
     "@types/express" "*"
     "@types/keygrip" "*"
