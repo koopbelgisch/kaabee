@@ -13,6 +13,7 @@ import * as home from "./controllers/home";
 import * as winkels from "./controllers/winkels";
 import * as tags from "./controllers/tags";
 import * as auth from "./controllers/auth";
+import * as users from "./controllers/users";
 
 export default async function spawn(): Promise<Express> {
 
@@ -54,6 +55,8 @@ export default async function spawn(): Promise<Express> {
 
   // Make useful variables available in the views
   app.use((req, res, next) => {
+    const port = req.socket.localPort;
+    req.baseUrl = `${ req.protocol }://${ req.hostname }${ port === 443 ? "" : ":" + port }`;
     res.locals.currentUser = req.user;
     res.locals.flash = req.flash();
     res.locals.env = env;
@@ -97,9 +100,9 @@ export default async function spawn(): Promise<Express> {
   app.get("/auth/email/check", auth.emailCheck);
   app.post("/auth/email/submit", auth.emailSubmit);
   app.get("/auth/email/wait", auth.emailWaiting);
-  app.get("/auth/email/confirm", auth.emailConfirm);
+  app.get("/auth/email/confirm/:token", auth.emailConfirm);
 
-  if (env.isDev) {
+  if (env.isDev || env.isTest) {
     app.get("/auth/dev/login", auth.devLogin);
   }
 
@@ -114,6 +117,11 @@ export default async function spawn(): Promise<Express> {
   // Tags
   app.get("/tags", tags.getTags);
   app.get("/tags/:tagId", tags.getTag);
+
+  // Users
+  app.get("/users", users.index);
+  app.get("/users/:userId", users.show);
+  app.post("/users/:userId", users.update);
 
   return app;
 }

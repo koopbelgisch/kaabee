@@ -20,6 +20,9 @@ export async function getStore(req: Request, res: Response): Promise<void> {
   if (store !== undefined) {
     const tags = await store.tags;
     res.render("store/show", { store: store, tags: tags });
+  } else {
+    res.status(404);
+    res.send("Not found");
   }
 }
 

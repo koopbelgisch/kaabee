@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { getManager, getRepository } from "typeorm";
 import { Tag } from "../models/tag";
 
 /**
@@ -7,7 +6,7 @@ import { Tag } from "../models/tag";
  * Shows all tags
  */
 export async function getTags(req: Request, res: Response): Promise<void> {
-  const tags = await getManager().find(Tag);
+  const tags = await Tag.find();
   res.render("tag/index", { tags: tags });
 }
 
@@ -16,9 +15,12 @@ export async function getTags(req: Request, res: Response): Promise<void> {
  * Shows all stores for tag with given id
  */
 export async function getTag(req: Request, res: Response): Promise<void> {
-  const tag = await getRepository(Tag).findOne(req.params["tagId"]);
+  const tag = await Tag.findOne(req.params["tagId"]);
   if (tag !== undefined) {
     const stores = await tag.stores;
     res.render("tag/show", { tag: tag, stores: stores });
+  } else {
+    res.status(404);
+    res.send("Not found");
   }
 }

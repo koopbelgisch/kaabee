@@ -1,8 +1,3 @@
-each message, type in flash
-  span
-    em #{ type }
-    | : #{ message}
-    
 nav.navbar.is-light(role="navigation", aria-label="main navigation")
   .navbar-brand
   //a(class="navbar-item") Kaabee
@@ -15,9 +10,15 @@ nav.navbar.is-light(role="navigation", aria-label="main navigation")
       a.navbar-item(href="/") Home
       a.navbar-item(href="/winkels") Winkels
       a.navbar-item(href="/tags") Tags
+      if currentUser && currentUser.admin
+        a.navbar-item(href="/users") Gebruikers
     .navbar-end
       .navbar-item
         .buttons
           a.button.is-primary
             strong Registreren
           a.button.is-light Aanmelden
+
+each message, type in flash
+  section.section
+    div(class=`notification is-${ type }`) <strong>#{type}:</strong> #{ message }

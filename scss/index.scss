@@ -1,6 +1,12 @@
-@import '_layout';
+@import "_variables";
+@import "_layout";
 
 // Components
 
 // Bulma
 @import "../node_modules/bulma/bulma.sass";
+
+
+// Font Awesome
+@import "../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";

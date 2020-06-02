@@ -7,4 +7,16 @@ export abstract class KaabeeEntity extends BaseEntity {
     return validate(this, opts);
   }
 
+  public async saveIfValid<T extends KaabeeEntity>():
+    Promise<{ updated?: ThisType<T>; errors: Array<ValidationError> }>
+  {
+
+    const errors = await this.validate();
+    let updated;
+    if(errors.length === 0) {
+      updated = await this.save();
+    }
+    return { updated, errors };
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
-import { IsEmail, ValidationError } from "class-validator";
+import { IsEmail, IsOptional, ValidationError } from "class-validator";
 import config from "config";
 
 import { randomURLSafe } from "../helpers/security";
@@ -28,19 +28,26 @@ export class User extends KaabeeEntity {
 
   @Index()
   @Column({
+    type: "varchar",
     length: 255,
     nullable: true,
     unique: true,
   })
   @IsEmail()
-  public email!: string;
+  @IsOptional()
+  public email: string | null;
 
   @Column({ default: false })
   public emailConfirmed!: boolean;
 
+  @Column({ type: "varchar", nullable: true })
+  @IsEmail()
+  @IsOptional()
+  public emailToConfirm!: string | null;
+
   @Index()
-  @Column({ nullable: true })
-  public emailToken?: string;
+  @Column({ type: "varchar", nullable: true })
+  public emailToken?: string | null;
 
   @Column({ default: 0 })
   public emailTokenExpiry!: number;
@@ -74,15 +81,12 @@ export class User extends KaabeeEntity {
     return this.email !== undefined && this.emailConfirmed;
   }
 
-  public async setEmail(email: string): Promise<Array<ValidationError>> {
-    this.email = email;
-    this.emailToken = await randomURLSafe(256),
-    this.emailTokenExpiry = Date.now() + (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
-    const errors = await this.validate();
-    if (errors.length === 0) {
-      this.save();
-    }
-    return errors;
+  public async requestEmailChange(email: string): Promise<{updated?: ThisType<User>; errors: Array<ValidationError>}> {
+    this.emailToConfirm = email;
+    this.emailToken = await randomURLSafe(64);
+    const validityMs = (config.get("settings.emailTokenValidityMinutes") as number) * 1000 * 60;
+    this.emailTokenExpiry = Date.now() + validityMs;
+    return this.saveIfValid();
   }
 
   public static async confirmEmail(token?: string): Promise<User | null> {
@@ -90,11 +94,13 @@ export class User extends KaabeeEntity {
       return null;
     }
     const user = await User.findOne({ emailToken: token });
-    if (!user || user.emailTokenExpiry > Date.now()) {
+    if (!user || user.emailTokenExpiry < Date.now()) {
       return null;
     } else {
+      user.email = user.emailToConfirm;
       user.emailConfirmed = true;
-      user.emailToken = undefined;
+      user.emailToConfirm = null;
+      user.emailToken = null;
       user.emailTokenExpiry = 0;
       return user.save();
     }

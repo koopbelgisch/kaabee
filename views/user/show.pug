@@ -1,0 +1,27 @@
+extends ../layout.pug
+block content
+  section.section: .columns.is-centered: .box.column.is-two-thirds-desktop: form(action=`/users/${ user.id }`, method="post")
+    .field.is-horizontal
+      .field-label.is-normal: label.label Naam
+      .field-body
+        .field.has-addons
+          p.control.is-expanded: input.input(type="text", name="name", value=user.name)
+          p.control: button.button.is-static(title="id") ##{ user.id }
+
+    .field.is-horizontal
+      .field-label.is-normal: label.label Email
+      .field-body
+        .field.has-addons
+          p.control.is-expanded: input.input(type="email", name="email", value=user.email)
+          .control: button.button.is-static
+            span Bevestigd?
+            if user.emailConfirmed
+              span.icon.is-small.has-text-success: i.fas.fa-check
+            else
+              span.icon.is-small.has-text-danger: i.fas.fa-cross
+
+    .field.is-horizontal
+      .field-label: label.label Site admin?
+      .field-body: .field: .control: input(name="admin", type="checkbox", checked=user.admin)
+    .field.is-grouped.is-grouped-right
+      .control: input.button.is-primary(type="submit", value="Opslaan")

@@ -1,9 +1,17 @@
-import test from "ava";
-import request from "supertest";
+import { TestInstance } from "./helper";
 
-import app from "./helpers/app";
+let t: TestInstance;
+beforeAll(async () => {
+  t = await TestInstance.launch();
+});
 
-test("get homepage", async t => {
-  const resp = await request(await app()).get("/");
-  t.is(resp.status, 200);
+beforeEach(async () => await t.resetClient());
+
+afterAll(() => {
+  t.closeServer();
+});
+
+test("get homepage", async () => {
+  const resp = await t.client.get("./");
+  expect(resp.statusCode).toBe(200);
 });
