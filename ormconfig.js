@@ -6,7 +6,7 @@ module.exports = {
   "synchronize": config.get("database.synchronize"),
   "logging": config.get("database.logging"),
   "entities": [
-    "src/models/**/*.ts"
+    "dist/models/**/*.js"
   ],
   "migrations": [
     "db/migrations/**/*.ts"
