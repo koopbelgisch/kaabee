@@ -12,12 +12,6 @@ nav.navbar.is-light(role="navigation", aria-label="main navigation")
       a.navbar-item(href="/tags") Tags
       if currentUser && currentUser.admin
         a.navbar-item(href="/users") Gebruikers
-    .navbar-end
-      .navbar-item
-        .buttons
-          a.button.is-primary
-            strong Registreren
-          a.button.is-light Aanmelden
 
 each message, type in flash
   section.section
