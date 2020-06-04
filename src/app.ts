@@ -55,8 +55,13 @@ export default async function spawn(): Promise<Express> {
 
   // Make useful variables available in the views
   app.use((req, res, next) => {
-    const port = req.socket.localPort;
-    req.baseUrl = `${ req.protocol }://${ req.hostname }${ port == undefined || port == 443 ? "" : ":" + port }`;
+    if (env.isTest) {
+      const port = req.socket.localPort;
+      req.baseUrl = `${ req.protocol }://${ req.hostname }:${  port }`;
+    } else {
+      req.baseUrl = config.get("app.defaultURL");
+    }
+
     res.locals.currentUser = req.user;
     res.locals.flash = req.flash();
     res.locals.env = env;
