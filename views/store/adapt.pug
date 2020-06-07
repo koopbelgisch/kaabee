@@ -1,0 +1,38 @@
+extends ../layout.pug
+block content
+  h1 Dit is de pagina voor de winkel #{ store.name }.
+
+    form(method="POST", action= "/winkels/" + store.id)
+      label Name
+      input(type= "text", value=store.name, name="Name")
+      br
+
+      label Description
+      textarea(rows=5, cols=35, value=store.description, name="Description")
+      br
+
+      label Postcode
+      input(type="number", value=store.postcode, min=1000, max=9999, name="Postcode")
+      br
+
+      label Site
+      input(type="text", value=store.site, name="Site")
+      br
+
+      label Email
+      input(type="text", value=store.email, name="Email")
+      br
+
+      label Tags
+      br
+
+      each tag in allTags
+        if tags.map(t => t.name).indexOf(tag.name) > -1
+          input.check(type="checkbox", name=tag.name, checked)
+          label(for=tag.name) #{ tag.name }
+        else
+          input.check(type="checkbox", name=tag.name)
+          label(for=tag.name) #{ tag.name }
+        br
+
+      input(type="submit", value="Submit")

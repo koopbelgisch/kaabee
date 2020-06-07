@@ -6,6 +6,8 @@ block content
     li
       a(href="/") Home
   ul
+    li
+      a(href="/winkels/" + store.id + "/update") Adapt #{store.name}
     li Beschrijving: #{ store.description }
       li BTW-nummer: #{ store.vatnumber }
       li Postcode: #{ store.postcode }
