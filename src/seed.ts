@@ -7,8 +7,13 @@ async function seed(): Promise<void> {
   await createConnection();
 
   // Create some fake tags
-  const tagNames = ["voeding", "doe-het-zelf", "apotheek"];
-  const tags = await factory.tag.createMany(tagNames.map(name => {return { name };}));
+  const tagNames = [
+    { "name": "Voeding", "isCategory": true },
+    { "name": "Doe-het-zelf", "isCategory": true },
+    { "name": "Apotheek", "isCategory": true },
+    { "name": "Puur Belgisch", "isCategory": false },
+    { "name": "Levert aan huis", "isCategory": false }];
+  const tags = await factory.tag.createMany(tagNames);
 
   // Create some fake stores
   const stores = await factory.store.createAmount(1000, { possibleTags: tags });

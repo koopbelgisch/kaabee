@@ -1,7 +1,69 @@
 extends ../layout.pug
 block content
-  h1 Dit zijn al onze winkels.
-  ul
-    each val, index in stores
-      li
-        a(href="/winkels/" + val.id) #{val.name}
+  section.section
+    h1.title.is-1 Onze winkels
+  section.section
+    .container
+      h1.title Zoeken
+      form#search_form(action="/winkels", method="get")
+        .field.is-horizontal
+          .field-label.is-normal
+            label.label(for="name_desc") Naam/beschrijving
+          .field-body
+            .field
+              p.control.is-expanded
+                input.input#name_desc(name="name_desc", type="text", placeholder="Vandemaele NV", value=formData.nameDesc)
+        .field.is-horizontal
+          .field-label.is-normal
+            label.label(for="postal") Postcode
+          .field-body
+            .field
+              p.control.is-expanded
+                input.input#postal(name="postal", type="text", placeholder="8501", value=formData.postal)
+        .field.is-horizontal
+          .field-label.is-normal
+            label.label(for="tag") Tag
+          .field-body
+            .field
+              p.control.is-expanded
+                .select
+                  select#tag(name="tag")
+                    option(value="", selected=!formData.tag) Alle tags
+                    each val, index in tags
+                      if val.isCategory
+                        option(value=val.id, selected=(formData.tag === val.id.toString())) #{val.name}
+        each val, index in tags
+          if !val.isCategory
+            .field.is-horizontal
+              .field-label
+                label.label #{val.name}
+              .field-body
+                .field
+                  label.checkbox
+                    input(name="tag", type="checkbox", checked=(formData.tag === val.id.toString()), value=val.id)
+        .field.is-horizontal
+          .field-label
+          .field-body
+            .field
+              .control
+                input.button.is-primary(type="submit", value="Zoeken")
+  section.section
+    .container
+      h1.title Resultaten
+      ul
+        each val, index in stores
+          li
+            a(href="/winkels/" + val.id) #{val.name}
+  script.
+    $(() => {
+        $(function () {
+            $("#search_form").on("submit", function () {
+                $("#search_form *").filter(":input").each(function () {
+                    if ($(this).val() === '')
+                        $(this).prop("disabled", true);
+                });
+
+                return true; // ensure form still submits
+            });
+        });
+    });

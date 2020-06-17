@@ -50,6 +50,7 @@ export const factory = {
   tag: new Factory(opts  => {
     const tag = new Tag();
     tag.name = opts.name || faker.commerce.department();
+    tag.isCategory = opts.isCategory;
     return tag;
   }),
 
@@ -58,7 +59,7 @@ export const factory = {
     if (opts.tags) {
       tags = opts.tags;
     } else if (opts.possibleTags) {
-      tags = [opts.possibleTags[Math.floor(Math.random() * opts.possibleTags.length)]];
+      tags = opts.possibleTags.sort(() => .5 - Math.random()).slice(0, 2)
     }
     const store = new Store();
     store.name = definedOr(opts.name, faker.company.companyName);

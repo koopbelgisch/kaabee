@@ -12,6 +12,9 @@ export class Tag extends BaseEntity {
   @ManyToMany(() => Store, store => store.tags)
   public stores: Promise<Store[]>;
 
+  @Column()
+  public isCategory!: boolean;
+
   constructor() {
     super();
   }
