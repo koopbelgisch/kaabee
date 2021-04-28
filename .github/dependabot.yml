@@ -1,0 +1,38 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@types/express"
+    versions:
+    - "> 4.17.4, < 4.18"
+  - dependency-name: ts-jest
+    versions:
+    - 26.4.4
+    - 26.5.0
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.17
+    - 14.14.22
+  - dependency-name: got
+    versions:
+    - 11.8.1
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.19
+  - dependency-name: nodemailer
+    versions:
+    - 6.4.17
+  - dependency-name: bulma
+    versions:
+    - 0.9.1
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: typescript
+    versions:
+    - 3.9.7
